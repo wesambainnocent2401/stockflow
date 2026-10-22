@@ -120,6 +120,22 @@ h2{font-size:16px;font-weight:700}
 .auth .tog button{background:none;border:0;color:var(--blue);font:600 14px inherit;cursor:pointer}
 .auth .btn{width:100%;justify-content:center}
 .auth .ok{color:#166534;background:#dcfce7;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-weight:600}
+.rcpt{max-width:320px;margin:0 auto;font-size:14px;color:#0f172a}
+.rcpt .rh{text-align:center;font-size:18px;margin-bottom:6px}
+.rcpt .rm{color:#475569;font-size:13px;text-align:center;border-bottom:1px dashed #94a3b8;padding-bottom:10px;margin-bottom:8px;line-height:1.6}
+.rcpt table{width:100%;border-collapse:collapse}
+.rcpt td{padding:6px 0;vertical-align:top}
+.rcpt td small{color:#64748b}
+.rcpt .rt{display:flex;justify-content:space-between;border-top:1px dashed #94a3b8;margin-top:8px;padding-top:10px;font-size:17px}
+.rcpt .rf{text-align:center;color:#64748b;margin-top:14px;font-size:13px}
+@media print{
+@page{margin:8mm}
+body>*:not(#modal){display:none!important}
+#modal .ov{position:static;background:none;display:block}
+#modal .sheet{max-height:none;box-shadow:none;border-radius:0;max-width:none}
+#modal .sh-h,#modal .sh-f{display:none}
+#toast{display:none}
+}
 @media(max-width:1000px){.stats{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}}
 @media(max-width:900px){#side{transform:translateX(-100%)}#side.open{transform:none}.main{margin-left:0}#menuBtn{display:grid}.fab{display:inline-flex}.top{padding:8px 12px}#view{padding:16px 14px}.hide-m{display:none}
 .auth{grid-template-columns:1fr}.auth .bp{display:none}.auth .mbrand{display:flex}}
@@ -316,7 +332,7 @@ function newSale() {
     const items = Object.entries(agg).map(([product_id, qty]) => ({product_id, qty}));
     const {error} = await sb.rpc('record_sale', {p_customer:form.elements.cust.value, p_method:form.elements.method.value, p_items:items});
     if (error) return dberr(error);
-    await refresh(); toast('Sale recorded. Stock updated.');
+    await refresh(); toast('Sale recorded. Stock updated.'); setTimeout(() => showReceipt(S.sales[0] && S.sales[0].id), 0);
   }, 'Save sale');
   $('#mf').addEventListener('input', calcSale); calcSale();
 }
@@ -436,7 +452,7 @@ function pgSales() {
   const today = sum(S.sales.filter(s => dkey(s.date) === dkey(new Date())), s => s.total);
   return head('Sales', 'Record sales and review your history.', `<button class="btn" data-a="newSale">+ Record sale</button>`) + `
   <div class="g3"><div class="card stat"><div class="l">Sales today</div><div class="v">${fmt(today)}</div></div><div class="card stat"><div class="l">All sales</div><div class="v">${fmt(sum(S.sales, s => s.total))}</div></div><div class="card stat"><div class="l">Number of sales</div><div class="v">${S.sales.length}</div></div></div>
-  <div class="card tw">${S.sales.length ? `<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Customer</th><th>Items</th><th>Payment</th><th class="num">Total</th></tr></thead><tbody>${S.sales.map(s => `<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Customer">${esc(s.customer)}</td><td data-l="Items">${s.items.map(i => esc(i.name) + ' x' + i.qty).join(', ')}</td><td data-l="Payment">${esc(s.method)}</td><td data-l="Total" class="num">${fmt(s.total)}</td></tr>`).join('')}</tbody></table>` : '<div class="empty"><b>No sales yet</b>Tap Record sale when you sell something.</div>'}</div>`;
+  <div class="card tw">${S.sales.length ? `<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Customer</th><th>Items</th><th>Payment</th><th class="num">Total</th><th></th></tr></thead><tbody>${S.sales.map(s => `<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Customer">${esc(s.customer)}</td><td data-l="Items">${s.items.map(i => esc(i.name) + ' x' + i.qty).join(', ')}</td><td data-l="Payment">${esc(s.method)}</td><td data-l="Total" class="num">${fmt(s.total)}</td><td class="act"><button class="btn ghost sm" data-a="receipt" data-ref="${esc(s.id)}">Receipt</button></td></tr>`).join('')}</tbody></table>` : '<div class="empty"><b>No sales yet</b>Tap Record sale when you sell something.</div>'}</div>`;
 }
 function pgPurchases() {
   return head('Purchases', 'Record new stock from your suppliers.', `<button class="btn" data-a="newPurchase">+ Record purchase</button>`) + `
@@ -523,12 +539,42 @@ let idleT;
 function resetIdle() { clearTimeout(idleT); if (S.user) idleT = setTimeout(() => logout('You were signed out after 30 minutes of inactivity.'), 30 * 60 * 1000); }
 ['click', 'keydown', 'touchstart', 'scroll'].forEach(ev => document.addEventListener(ev, resetIdle, {passive:true}));
 
+/* ===== receipts ===== */
+function receiptText(s) {
+  return [S.settings.business, 'Receipt ' + s.id, new Date(s.date).toLocaleString('en-GB'), '']
+    .concat(s.items.map(i => `${i.name} ${i.qty} x ${fmt(i.price)} = ${fmt(i.qty * i.price)}`))
+    .concat(['', 'Total: ' + fmt(s.total), 'Paid by: ' + s.method, 'Thank you for your business.']).join('\n');
+}
+function showReceipt(ref) {
+  const s = S.sales.find(x => x.id === ref); if (!s) return;
+  const rows = s.items.map(i => `<tr><td>${esc(i.name)}<br><small>${i.qty} x ${fmt(i.price)}</small></td><td class="num">${fmt(i.qty * i.price)}</td></tr>`).join('');
+  $('#modal').innerHTML = `<div class="ov" data-a="closeOv"><div class="sheet">
+    <div class="sh-h"><h3>Receipt</h3><button type="button" class="ic" data-a="close" aria-label="Close">${ic('x')}</button></div>
+    <div class="sh-b"><div class="rcpt">
+      <div class="rh"><b>${esc(S.settings.business)}</b></div>
+      <div class="rm">Receipt ${esc(s.id)}<br>${esc(new Date(s.date).toLocaleString('en-GB'))}<br>Customer: ${esc(s.customer)}<br>Paid by: ${esc(s.method)}</div>
+      <table>${rows}</table>
+      <div class="rt"><span>Total</span><b>${fmt(s.total)}</b></div>
+      <p class="rf">Thank you for your business.</p>
+    </div></div>
+    <div class="sh-f"><button type="button" class="btn ghost" data-a="shareReceipt" data-ref="${esc(s.id)}">Share</button><button type="button" class="btn" data-a="printReceipt">Print</button></div>
+  </div></div>`;
+}
+
 /* ===== events ===== */
 const H = {
   menu() { $('#side').classList.toggle('open'); $('#scrim').classList.toggle('on'); },
   close: closeModal, closeOv: closeModal,
   go(d) { location.hash = d.to; },
   logout() { logout(); },
+  receipt(d) { showReceipt(d.ref); },
+  printReceipt() { window.print(); },
+  shareReceipt(d) {
+    const s = S.sales.find(x => x.id === d.ref); if (!s) return;
+    const text = receiptText(s);
+    if (navigator.share) navigator.share({text}).catch(() => {});
+    else window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  },
   toggleAuth() { mode = mode === 'login' ? 'signup' : 'login'; authView(); },
   add(d) { openForm(d.e); }, edit(d) { openForm(d.e, d.id); },
   async del(d) {
