@@ -128,516 +128,322 @@ h2{font-size:16px;font-weight:700}
 .rcpt td small{color:#64748b}
 .rcpt .rt{display:flex;justify-content:space-between;border-top:1px dashed #94a3b8;margin-top:8px;padding-top:10px;font-size:17px}
 .rcpt .rf{text-align:center;color:#64748b;margin-top:14px;font-size:13px}
-@media print{
-@page{margin:8mm}
-body>*:not(#modal){display:none!important}
-#modal .ov{position:static;background:none;display:block}
-#modal .sheet{max-height:none;box-shadow:none;border-radius:0;max-width:none}
-#modal .sh-h,#modal .sh-f{display:none}
-#toast{display:none}
-}
+@media print{@page{margin:8mm}body>*:not(#modal){display:none!important}#modal .ov{position:static;background:none;display:block}#modal .sheet{max-height:none;box-shadow:none;border-radius:0}#modal .sh-h,#modal .sh-f{display:none}#toast{display:none}}
 @media(max-width:1000px){.stats{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}}
-@media(max-width:900px){#side{transform:translateX(-100%)}#side.open{transform:none}.main{margin-left:0}#menuBtn{display:grid}.fab{display:inline-flex}.top{padding:8px 12px}#view{padding:16px 14px}.hide-m{display:none}
-.auth{grid-template-columns:1fr}.auth .bp{display:none}.auth .mbrand{display:flex}}
+@media(max-width:900px){#side{transform:translateX(-100%)}#side.open{transform:none}.main{margin-left:0}#menuBtn{display:grid}.fab{display:inline-flex}.top{padding:8px 12px}#view{padding:16px 14px}.hide-m{display:none}.auth{grid-template-columns:1fr}.auth .bp{display:none}.auth .mbrand{display:flex}}
 @media(min-width:700px){.ov{align-items:center}.sheet{border-radius:18px}}
-@media(max-width:700px){
-.resp thead{display:none}
-.resp tr{display:block;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 12px;background:#fff}
-.resp td{display:flex;justify-content:space-between;gap:12px;border:0!important;padding:7px 0;text-align:right}
-.resp td::before{content:attr(data-l);color:var(--mut);font-weight:600;text-align:left}
-.resp td.act{justify-content:flex-end}.resp td.act::before{content:none}
-h1{font-size:22px}
-}
+@media(max-width:700px){.resp thead{display:none}.resp tr{display:block;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 12px;background:#fff}.resp td{display:flex;justify-content:space-between;gap:12px;border:0!important;padding:7px 0;text-align:right}.resp td::before{content:attr(data-l);color:var(--mut);font-weight:600;text-align:left}.resp td.act{justify-content:flex-end}.resp td.act::before{content:none}h1{font-size:22px}}
 @media(max-width:420px){.stats{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* StockFlow advanced visual polish */
+:root{--bg:#f3f6fc;--line:#e7edf6;--r:16px;--shadow:0 8px 28px rgba(15,23,42,.045)}
+body{background:radial-gradient(ellipse at 92% 0%,#e8f0ff 0,transparent 34%),var(--bg)}
+.card{box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.card:hover{box-shadow:0 12px 32px rgba(15,23,42,.075)}
+.top{box-shadow:0 2px 12px rgba(15,23,42,.035)}
+.nav a{transition:background .18s,transform .18s}
+.nav a:hover{transform:translateX(2px)}
+.nav a.on{box-shadow:0 6px 16px rgba(37,99,235,.24)}
+.stat .v{letter-spacing:-.04em}
+.btn{box-shadow:0 3px 9px rgba(37,99,235,.12);transition:transform .15s,filter .15s}
+.btn:active{transform:translateY(1px)}
+.tbl tbody tr:hover{background:#f8faff}
+.stat.navy{background:linear-gradient(135deg,#0b1f3a,#173d70)}
+@media(max-width:700px){.card{padding:15px}.ph{align-items:flex-start}.stats{gap:10px}}
 </style>
 </head>
 <body>
-
 <div class="auth" id="auth">
-  <div class="bp">
-    <div class="brand"><span class="logo" id="logo1"></span>StockFlow</div>
-    <div><h2>Know what you have. Sell with confidence.</h2><p>Track products, stock, sales and suppliers in one place, built for Kenyan shops.</p></div>
-    <small style="color:#7d90ad">Your business data is stored securely and is never kept in this browser.</small>
-  </div>
+  <div class="bp"><div class="brand"><span class="logo" id="logo1"></span>StockFlow</div><div><h2>Know what you have. Sell with confidence.</h2><p>Track products, stock, sales and suppliers in one place, built for Kenyan shops.</p></div><small style="color:#7d90ad">Your business data is stored securely and is never kept in this browser.</small></div>
   <div class="fp"><form id="authf" novalidate></form></div>
 </div>
-
 <div class="app hidden" id="app">
-  <aside id="side">
-    <div class="brand"><span class="logo" id="logo2"></span>StockFlow</div>
-    <nav class="nav" id="nav"></nav>
-    <div class="sfoot"><b id="sbiz"></b><small id="sown"></small><button class="btn sm" data-a="logout">Log out</button></div>
-  </aside>
+  <aside id="side"><div class="brand"><span class="logo" id="logo2"></span>StockFlow</div><nav class="nav" id="nav"></nav><div class="sfoot"><b id="sbiz"></b><small id="sown"></small><button class="btn sm" data-a="logout">Log out</button></div></aside>
   <div id="scrim" data-a="menu"></div>
-  <div class="main">
-    <header class="top">
-      <button class="ic" id="menuBtn" data-a="menu" aria-label="Open menu"></button>
-      <b id="title">Dashboard</b>
-      <span class="sp"></span>
-      <button class="btn sm hide-m" data-a="newSale">+ Record sale</button>
-      <span class="av" id="av">S</span>
-    </header>
-    <main id="view"></main>
-  </div>
+  <div class="main"><header class="top"><button class="ic" id="menuBtn" data-a="menu" aria-label="Open menu"></button><b id="title">Dashboard</b><span class="sp"></span><button class="btn sm hide-m" data-a="newSale">+ Record sale</button><span class="av" id="av">S</span></header><main id="view"></main></div>
   <button class="btn fab" data-a="newSale">+ New sale</button>
 </div>
-<div id="modal"></div>
-<div id="toast" role="status"></div>
-
+<div id="modal"></div><div id="toast" role="status"></div>
 <script>
-/* ===== Supabase (public URL + publishable key are safe to ship; never put the secret key here) ===== */
-const SB_URL = 'https://ppbalvgvidtiwmdmrvno.supabase.co';
-const SB_KEY = 'sb_publishable_yCzOcbKHosbe0GlsBP1i2w_MIxXjD_X';
-/* persistSession:false keeps the login only in memory: nothing is written to localStorage/sessionStorage */
-const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:false, autoRefreshToken:true, detectSessionInUrl:false}}) : null;
-
-/* ===== helpers ===== */
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const IC = {
-  dash:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
-  box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
-  layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
-  cart:'<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l3 12h11l2-8H6"/>',
-  bag:'<path d="M5 7h14l-1 13H6z"/><path d="M9 7a3 3 0 016 0"/>',
-  truck:'<path d="M2 6h12v10H2zM14 10h4l4 3v3h-8"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',
-  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4.5a3.5 3.5 0 010 7M22 20c0-3-1.5-5-4-5.7"/>',
-  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
-  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>',
-  menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
-  x:'<path d="M6 6l12 12M18 6L6 18"/>',
-  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/>',
-  trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
-  wallet:'<path d="M3 7h16a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 7l13-3v3M16 14h2"/>'
+const SB_URL='https://ppbalvgvidtiwmdmrvno.supabase.co';
+const SB_KEY='sb_publishable_yCzOcbKHosbe0GlsBP1i2w_MIxXjD_X';
+const sb=window.supabase?window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false}}):null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC={
+dash:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+cart:'<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l3 12h11l2-8H6"/>',
+bag:'<path d="M5 7h14l-1 13H6z"/><path d="M9 7a3 3 0 016 0"/>',
+truck:'<path d="M2 6h12v10H2zM14 10h4l4 3v3h-8"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',
+users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4.5a3.5 3.5 0 010 7M22 20c0-3-1.5-5-4-5.7"/>',
+chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>',
+menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',
+alert:'<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/>',
+trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+wallet:'<path d="M3 7h16a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 7l13-3v3M16 14h2"/>'
 };
-const ic = (n, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
-const fmt = n => S.settings.currency + ' ' + Math.round(n).toLocaleString('en-KE');
-const dkey = d => new Date(d).toDateString();
-const fdt = d => new Date(d).toLocaleString('en-GB', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
-const sum = (a, f) => a.reduce((t, x) => t + f(x), 0);
-
-/* ===== in-memory state only. Cleared on logout. ===== */
-const blank = () => ({user:null, biz:null, role:null, settings:{business:'', owner:'', currency:'KSh'}, products:[], suppliers:[], customers:[], sales:[], purchases:[], adjust:[]});
-let S = blank();
-const M = () => S.role === 'owner' || S.role === 'manager';
-
-function dberr(e) {
-  const m = (e && e.message) || '';
-  if (e && e.code === '23505') return 'That SKU is already used by another product.';
-  if (/fetch|network|Failed to/i.test(m)) return 'Could not reach the server. Check your internet and try again.';
-  if (/JWT|expired|not signed/i.test(m)) return 'Your session expired. Please log in again.';
-  if (e && e.code === '42501') return "You don't have permission to do that.";
-  return m || 'Something went wrong. Please try again.';
+const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`;
+const fmt=n=>S.settings.currency+' '+Math.round(Number(n)||0).toLocaleString('en-KE');
+const dkey=d=>new Date(d).toDateString();
+const fdt=d=>new Date(d).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const sum=(a,f)=>a.reduce((t,x)=>t+f(x),0);
+const blank=()=>({user:null,biz:null,role:null,settings:{business:'',owner:'',currency:'KSh'},products:[],suppliers:[],customers:[],sales:[],purchases:[],adjust:[],expenses:[]});
+let S=blank();
+const M=()=>S.role==='owner'||S.role==='manager';
+function dberr(e){const m=(e&&e.message)||'';if(e&&e.code==='23505')return'That SKU is already used by another product.';if(/fetch|network|Failed to/i.test(m))return'Could not reach the server. Check your internet and try again.';if(/JWT|expired|not signed/i.test(m))return'Your session expired. Please log in again.';if(e&&e.code==='42501')return"You don't have permission to do that.";return m||'Something went wrong. Please try again.';}
+async function loadAll(){
+ const q=(t,sel,o)=>sb.from(t).select(sel).order(o,{ascending:o!=='created_at'}).limit(400);
+ const res=await Promise.all([
+ q('products','*','name'),q('suppliers','*','name'),q('customers','*','name'),
+ q('sales','*, sale_items(*)','created_at'),q('purchases','*, purchase_items(*)','created_at'),
+ q('stock_adjustments','*','created_at'),
+ sb.from('expenses').select('*').order('expense_date',{ascending:false}).order('created_at',{ascending:false}).limit(400),
+ sb.from('businesses').select('id,name,currency').limit(1),
+ sb.from('profiles').select('full_name,role,business_id').eq('id',S.user.id).limit(1)
+ ]);
+ const bad=res.find(r=>r.error);if(bad)throw bad.error;
+ const [pr,su,cu,sa,pu,ad,ex,bz,me]=res.map(r=>r.data);
+ if(!me[0]||!bz[0])throw new Error('Your account has no business yet. Please contact support.');
+ S.biz=me[0].business_id||bz[0].id;S.role=me[0].role;
+ const business=bz.find(b=>b.id===S.biz)||bz[0];
+ S.settings={business:business.name,currency:business.currency||'KSh',owner:me[0].full_name||S.user.email};
+ S.products=pr.map(p=>({id:p.id,name:p.name,sku:p.sku||'',category:p.category||'',buy:+p.buying_price,sell:+p.selling_price,qty:p.quantity,reorder:p.reorder_level??0}));
+ S.suppliers=su.map(x=>({id:x.id,name:x.name,phone:x.phone||'',email:x.email||'',address:x.address||''}));
+ S.customers=cu.map(x=>({id:x.id,name:x.name,phone:x.phone||'',email:x.email||'',address:x.address||''}));
+ S.sales=sa.map(s=>({id:s.ref,date:s.created_at,customer:s.customer||'Walk-in',method:s.method||'',total:+s.total,items:(s.sale_items||[]).map(i=>({name:i.name,qty:i.qty,price:+i.price,cost:+i.cost}))}));
+ S.purchases=pu.map(s=>({id:s.ref,date:s.created_at,supplier:s.supplier||'',total:+s.total,items:(s.purchase_items||[]).map(i=>({name:i.name,qty:i.qty,cost:+i.cost}))}));
+ S.adjust=ad.map(a=>({id:'AD-'+a.id.slice(0,4).toUpperCase(),date:a.created_at,name:a.name,change:a.change,reason:a.reason||''}));
+ S.expenses=ex.map(e=>({id:e.id,category:e.category,description:e.description||'',amount:Number(e.amount),method:e.payment_method,date:e.expense_date,created_at:e.created_at}));
 }
-
-/* ===== load all business data from Supabase ===== */
-async function loadAll() {
-  const q = (t, sel, o) => sb.from(t).select(sel).order(o, {ascending:o !== 'created_at'}).limit(400);
-  const res = await Promise.all([
-    q('products', '*', 'name'), q('suppliers', '*', 'name'), q('customers', '*', 'name'),
-    q('sales', '*, sale_items(*)', 'created_at'), q('purchases', '*, purchase_items(*)', 'created_at'),
-    q('stock_adjustments', '*', 'created_at'),
-    sb.from('businesses').select('id,name,currency').limit(1),
-    sb.from('profiles').select('full_name,role,business_id').eq('id', S.user.id).limit(1)
-  ]);
-  const bad = res.find(r => r.error); if (bad) throw bad.error;
-  const [pr, su, cu, sa, pu, ad, bz, me] = res.map(r => r.data);
-  if (!me[0] || !bz[0]) throw new Error('Your account has no business yet. Please contact support.');
-  S.biz = bz[0].id; S.role = me[0].role;
-  S.settings = {business:bz[0].name, currency:bz[0].currency || 'KSh', owner:me[0].full_name || S.user.email};
-  S.products = pr.map(p => ({id:p.id, name:p.name, sku:p.sku || '', category:p.category || '', buy:+p.buying_price, sell:+p.selling_price, qty:p.quantity, reorder:p.reorder_level ?? 0}));
-  S.suppliers = su.map(x => ({id:x.id, name:x.name, phone:x.phone || '', email:x.email || '', address:x.address || ''}));
-  S.customers = cu.map(x => ({id:x.id, name:x.name, phone:x.phone || '', email:x.email || '', address:x.address || ''}));
-  S.sales = sa.map(s => ({id:s.ref, date:s.created_at, customer:s.customer || 'Walk-in', method:s.method || '', total:+s.total, items:(s.sale_items || []).map(i => ({name:i.name, qty:i.qty, price:+i.price, cost:+i.cost}))}));
-  S.purchases = pu.map(s => ({id:s.ref, date:s.created_at, supplier:s.supplier || '', total:+s.total, items:(s.purchase_items || []).map(i => ({name:i.name, qty:i.qty, cost:+i.cost}))}));
-  S.adjust = ad.map(a => ({id:'AD-' + a.id.slice(0, 4).toUpperCase(), date:a.created_at, name:a.name, change:a.change, reason:a.reason || ''}));
+async function refresh(){await loadAll();render();}
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
+function closeModal(){$('#modal').innerHTML='';}
+function modal(title,body,onSubmit,btn='Save'){
+ $('#modal').innerHTML=`<div class="ov" data-a="closeOv"><form class="sheet" id="mf" novalidate><div class="sh-h"><h3>${title}</h3><button type="button" class="ic" data-a="close" aria-label="Close">${ic('x')}</button></div><div class="sh-b">${body}<p class="err" id="merr"></p></div><div class="sh-f"><button type="button" class="btn ghost" data-a="close">Cancel</button><button class="btn" id="msave">${btn}</button></div></form></div>`;
+ $('#mf').onsubmit=async e=>{e.preventDefault();const f=e.target,b=$('#msave'),old=b.textContent;b.disabled=true;b.textContent='Saving...';$('#merr').textContent='';let err;try{err=await onSubmit(f);}catch(x){err=dberr(x);}if(err){$('#merr').textContent=err;b.disabled=false;b.textContent=old;}else closeModal();};
 }
-async function refresh() { await loadAll(); render(); }
-
-/* ===== toast + modal ===== */
-let toastT;
-function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800); }
-function closeModal() { $('#modal').innerHTML = ''; }
-function modal(title, body, onSubmit, btn = 'Save') {
-  $('#modal').innerHTML = `<div class="ov" data-a="closeOv"><form class="sheet" id="mf" novalidate>
-    <div class="sh-h"><h3>${title}</h3><button type="button" class="ic" data-a="close" aria-label="Close">${ic('x')}</button></div>
-    <div class="sh-b">${body}<p class="err" id="merr"></p></div>
-    <div class="sh-f"><button type="button" class="btn ghost" data-a="close">Cancel</button><button class="btn" id="msave">${btn}</button></div></form></div>`;
-  $('#mf').onsubmit = async e => {
-    e.preventDefault();
-    const f = e.target, b = $('#msave'), old = b.textContent;
-    b.disabled = true; b.textContent = 'Saving...'; $('#merr').textContent = '';
-    let err; try { err = await onSubmit(f); } catch (x) { err = dberr(x); }
-    if (err) { $('#merr').textContent = err; b.disabled = false; b.textContent = old; } else closeModal();
-  };
-}
-const status = p => p.qty <= 0 ? ['Out of stock', 'bad'] : p.qty <= p.reorder ? ['Low stock', 'warn'] : ['In stock', 'ok'];
-const lowList = () => S.products.filter(p => p.qty <= p.reorder);
-const head = (t, s, a = '') => `<div class="ph"><div><h1>${t}</h1><p class="sub">${s}</p></div><div class="acts">${a}</div></div>`;
-const badge = (t, c) => `<span class="b ${c}">${t}</span>`;
-
-/* ===== add / edit products, suppliers, customers ===== */
-const ENT = {
-  products: {one:'product', f:[
-    {k:'name', l:'Product name', req:1}, {k:'sku', l:'SKU / code'}, {k:'category', l:'Category', list:1},
-    {k:'buy', l:'Buying price', t:'number'}, {k:'sell', l:'Selling price', t:'number', req:1},
-    {k:'qty', l:'Starting stock', t:'number', int:1}, {k:'reorder', l:'Reorder level', t:'number', int:1}]},
-  suppliers: {one:'supplier', f:[{k:'name', l:'Name', req:1}, {k:'phone', l:'Phone'}, {k:'email', l:'Email'}, {k:'address', l:'Location'}]},
-  customers: {one:'customer', f:[{k:'name', l:'Name', req:1}, {k:'phone', l:'Phone'}, {k:'email', l:'Email'}, {k:'address', l:'Location'}]}
+const status=p=>p.qty<=0?['Out of stock','bad']:p.qty<=p.reorder?['Low stock','warn']:['In stock','ok'];
+const lowList=()=>S.products.filter(p=>p.qty<=p.reorder);
+const head=(t,s,a='')=>`<div class="ph"><div><h1>${t}</h1><p class="sub">${s}</p></div><div class="acts">${a}</div></div>`;
+const badge=(t,c)=>`<span class="b ${c}">${t}</span>`;
+const ENT={
+ products:{one:'product',f:[{k:'name',l:'Product name',req:1},{k:'sku',l:'SKU / code'},{k:'category',l:'Category',list:1},{k:'buy',l:'Buying price',t:'number'},{k:'sell',l:'Selling price',t:'number',req:1},{k:'qty',l:'Starting stock',t:'number',int:1},{k:'reorder',l:'Reorder level',t:'number',int:1}]},
+ suppliers:{one:'supplier',f:[{k:'name',l:'Name',req:1},{k:'phone',l:'Phone'},{k:'email',l:'Email'},{k:'address',l:'Location'}]},
+ customers:{one:'customer',f:[{k:'name',l:'Name',req:1},{k:'phone',l:'Phone'},{k:'email',l:'Email'},{k:'address',l:'Location'}]}
 };
-const fieldHtml = (f, v) => `<label class="fld"><span>${f.l}</span><input name="${f.k}" type="${f.t || 'text'}" value="${esc(v ?? '')}" ${f.t === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''} ${f.list ? 'list="cats"' : ''} autocomplete="off"></label>`;
-function openForm(ent, id) {
-  const E = ENT[ent], rec = id ? S[ent].find(r => r.id === id) : {};
-  const fields = E.f.filter(f => !(id && f.k === 'qty'));
-  const cats = [...new Set(S.products.map(p => p.category).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
-  const note = id && ent === 'products' ? '<p class="sub" style="margin:0 0 12px">To change the quantity, use Adjust stock in Inventory so every change is recorded.</p>' : '';
-  modal((id ? 'Edit ' : 'Add ') + E.one, `${note}<div class="${ent === 'products' ? 'two' : ''}">${fields.map(f => fieldHtml(f, rec[f.k])).join('')}</div><datalist id="cats">${cats}</datalist>`, async form => {
-    const d = {};
-    for (const f of fields) {
-      let v = form.elements[f.k].value.trim();
-      if (f.req && !v) return f.l + ' is required.';
-      if (f.t === 'number') { v = v === '' ? 0 : Number(v); if (!isFinite(v) || v < 0) return f.l + ' must be 0 or more.'; if (f.int) v = Math.floor(v); }
-      d[f.k] = v;
-    }
-    const row = ent === 'products'
-      ? {name:d.name, sku:d.sku || null, category:d.category || null, buying_price:d.buy, selling_price:d.sell, reorder_level:d.reorder, ...(id ? {} : {quantity:d.qty})}
-      : {name:d.name, phone:d.phone || null, email:d.email || null, address:d.address || null};
-    const {error} = id ? await sb.from(ent).update(row).eq('id', id) : await sb.from(ent).insert({business_id:S.biz, ...row});
-    if (error) return dberr(error);
-    await refresh(); toast(id ? 'Changes saved' : E.one[0].toUpperCase() + E.one.slice(1) + ' added');
-  }, id ? 'Save changes' : 'Add ' + E.one);
+const fieldHtml=(f,v)=>`<label class="fld"><span>${f.l}</span><input name="${f.k}" type="${f.t||'text'}" value="${esc(v??'')}" ${f.t==='number'?'min="0" step="any" inputmode="decimal"':''} ${f.list?'list="cats"':''} autocomplete="off"></label>`;
+function openForm(ent,id){
+ const E=ENT[ent],rec=id?S[ent].find(r=>r.id===id):{},fields=E.f.filter(f=>!(id&&f.k==='qty'));
+ const cats=[...new Set(S.products.map(p=>p.category).filter(Boolean))].map(c=>`<option value="${esc(c)}">`).join('');
+ const note=id&&ent==='products'?'<p class="sub" style="margin:0 0 12px">To change quantity, use Adjust stock in Inventory.</p>':'';
+ modal((id?'Edit ':'Add ')+E.one,`${note}<div class="${ent==='products'?'two':''}">${fields.map(f=>fieldHtml(f,rec[f.k])).join('')}</div><datalist id="cats">${cats}</datalist>`,async form=>{
+ const d={};for(const f of fields){let v=form.elements[f.k].value.trim();if(f.req&&!v)return f.l+' is required.';if(f.t==='number'){v=v===''?0:Number(v);if(!isFinite(v)||v<0)return f.l+' must be 0 or more.';if(f.int)v=Math.floor(v);}d[f.k]=v;}
+ const row=ent==='products'?{name:d.name,sku:d.sku||null,category:d.category||null,buying_price:d.buy,selling_price:d.sell,reorder_level:d.reorder,...(id?{}:{quantity:d.qty})}:{name:d.name,phone:d.phone||null,email:d.email||null,address:d.address||null};
+ const {error}=id?await sb.from(ent).update(row).eq('id',id):await sb.from(ent).insert({business_id:S.biz,...row});
+ if(error)return dberr(error);await refresh();toast(id?'Changes saved':E.one[0].toUpperCase()+E.one.slice(1)+' added');
+ },id?'Save changes':'Add '+E.one);
 }
-
-/* ===== sales, purchases, stock adjustments (server functions do the real work) ===== */
-const stockOpts = () => S.products.filter(p => p.qty > 0).map(p => `<option value="${p.id}">${esc(p.name)} (${p.qty} left)</option>`).join('');
-const lineHtml = () => `<div class="line"><select name="pid">${stockOpts()}</select><input name="q" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity"><button type="button" class="ic" data-a="rmLine" aria-label="Remove item">${ic('x')}</button></div>`;
-function calcSale() {
-  let t = 0;
-  document.querySelectorAll('.line').forEach(l => { const p = S.products.find(x => x.id === l.querySelector('[name=pid]').value); t += p ? p.sell * (Number(l.querySelector('[name=q]').value) || 0) : 0; });
-  const el = $('#stot'); if (el) el.textContent = fmt(t);
+const stockOpts=()=>S.products.filter(p=>p.qty>0).map(p=>`<option value="${p.id}">${esc(p.name)} (${p.qty} left)</option>`).join('');
+const lineHtml=()=>`<div class="line"><select name="pid">${stockOpts()}</select><input name="q" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity"><button type="button" class="ic" data-a="rmLine" aria-label="Remove item">${ic('x')}</button></div>`;
+function calcSale(){let t=0;document.querySelectorAll('.line').forEach(l=>{const p=S.products.find(x=>x.id===l.querySelector('[name=pid]').value);t+=p?p.sell*(Number(l.querySelector('[name=q]').value)||0):0;});const el=$('#stot');if(el)el.textContent=fmt(t);}
+function newSale(){
+ if(!S.products.some(p=>p.qty>0))return toast('No products in stock to sell. Add a product first.');
+ const cust=['<option>Walk-in</option>'].concat(S.customers.map(c=>`<option>${esc(c.name)}</option>`)).join('');
+ modal('Record sale',`<div class="two"><label class="fld"><span>Customer</span><select name="cust">${cust}</select></label><label class="fld"><span>Payment</span><select name="method"><option>Cash</option><option>M-Pesa</option><option>Bank</option><option>Credit</option></select></label></div><div id="lines">${lineHtml()}</div><button type="button" class="btn ghost sm" data-a="addLine">+ Add item</button><div class="tot"><span>Total</span><strong id="stot">${fmt(0)}</strong></div>`,async form=>{
+ const lines=[...form.querySelectorAll('.line')].map(l=>({product_id:l.querySelector('[name=pid]').value,qty:Math.floor(Number(l.querySelector('[name=q]').value))}));
+ if(!lines.length)return'Add at least one item.';if(lines.some(l=>!(l.qty>0)))return'Enter a quantity of 1 or more for every item.';
+ const agg={};lines.forEach(l=>agg[l.product_id]=(agg[l.product_id]||0)+l.qty);for(const pid in agg){const p=S.products.find(x=>x.id===pid);if(p&&agg[pid]>p.qty)return`Only ${p.qty} of ${p.name} in stock.`;}
+ const items=Object.entries(agg).map(([product_id,qty])=>({product_id,qty}));
+ const {error}=await sb.rpc('record_sale',{p_customer:form.elements.cust.value,p_method:form.elements.method.value,p_items:items});
+ if(error)return dberr(error);await refresh();toast('Sale recorded. Stock updated.');setTimeout(()=>showReceipt(S.sales[0]&&S.sales[0].id),0);
+ },'Save sale');$('#mf').addEventListener('input',calcSale);calcSale();
 }
-function newSale() {
-  if (!S.products.some(p => p.qty > 0)) return toast('No products in stock to sell. Add a product first.');
-  const cust = ['<option>Walk-in</option>'].concat(S.customers.map(c => `<option>${esc(c.name)}</option>`)).join('');
-  modal('Record sale', `<div class="two"><label class="fld"><span>Customer</span><select name="cust">${cust}</select></label>
-    <label class="fld"><span>Payment</span><select name="method"><option>Cash</option><option>M-Pesa</option><option>Bank</option><option>Credit</option></select></label></div>
-    <div id="lines">${lineHtml()}</div><button type="button" class="btn ghost sm" data-a="addLine">+ Add item</button>
-    <div class="tot"><span>Total</span><strong id="stot">${fmt(0)}</strong></div>`, async form => {
-    const lines = [...form.querySelectorAll('.line')].map(l => ({product_id:l.querySelector('[name=pid]').value, qty:Math.floor(Number(l.querySelector('[name=q]').value))}));
-    if (!lines.length) return 'Add at least one item.';
-    if (lines.some(l => !(l.qty > 0))) return 'Enter a quantity of 1 or more for every item.';
-    const agg = {}; lines.forEach(l => agg[l.product_id] = (agg[l.product_id] || 0) + l.qty);
-    for (const pid in agg) { const p = S.products.find(x => x.id === pid); if (p && agg[pid] > p.qty) return `Only ${p.qty} of ${p.name} in stock.`; }
-    const items = Object.entries(agg).map(([product_id, qty]) => ({product_id, qty}));
-    const {error} = await sb.rpc('record_sale', {p_customer:form.elements.cust.value, p_method:form.elements.method.value, p_items:items});
-    if (error) return dberr(error);
-    await refresh(); toast('Sale recorded. Stock updated.'); setTimeout(() => showReceipt(S.sales[0] && S.sales[0].id), 0);
-  }, 'Save sale');
-  $('#mf').addEventListener('input', calcSale); calcSale();
+function newPurchase(pre){
+ if(!M())return;if(!S.products.length)return toast('Add a product first.');
+ const first=S.products.find(p=>p.id===pre)||S.products[0],sup=S.suppliers.map(s=>`<option>${esc(s.name)}</option>`).join('')||'<option>Other supplier</option>',prods=S.products.map(p=>`<option value="${p.id}" ${p.id===first.id?'selected':''}>${esc(p.name)}</option>`).join('');
+ modal('Record purchase',`<label class="fld"><span>Supplier</span><select name="sup">${sup}</select></label><label class="fld"><span>Product</span><select name="pid">${prods}</select></label><div class="two"><label class="fld"><span>Quantity bought</span><input name="q" type="number" min="1" value="10" inputmode="numeric"></label><label class="fld"><span>Cost per unit</span><input name="cost" type="number" min="0" step="any" value="${first.buy}" inputmode="decimal"></label></div>`,async form=>{
+ const q=Math.floor(Number(form.elements.q.value)),cost=Number(form.elements.cost.value);if(!(q>0))return'Quantity must be 1 or more.';if(!isFinite(cost)||cost<0)return'Cost must be 0 or more.';
+ const {error}=await sb.rpc('record_purchase',{p_supplier:form.elements.sup.value,p_items:[{product_id:form.elements.pid.value,qty:q,cost}]});if(error)return dberr(error);await refresh();toast('Purchase recorded. Stock increased.');
+ },'Save purchase');$('#mf').elements.pid.addEventListener('change',e=>{$('#mf').elements.cost.value=S.products.find(x=>x.id===e.target.value).buy;});
 }
-function newPurchase(pre) {
-  if (!M()) return;
-  if (!S.products.length) return toast('Add a product first.');
-  const first = S.products.find(p => p.id === pre) || S.products[0];
-  const sup = S.suppliers.map(s => `<option>${esc(s.name)}</option>`).join('') || '<option>Other supplier</option>';
-  const prods = S.products.map(p => `<option value="${p.id}" ${p.id === first.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
-  modal('Record purchase', `<label class="fld"><span>Supplier</span><select name="sup">${sup}</select></label>
-    <label class="fld"><span>Product</span><select name="pid">${prods}</select></label>
-    <div class="two"><label class="fld"><span>Quantity bought</span><input name="q" type="number" min="1" value="10" inputmode="numeric"></label>
-    <label class="fld"><span>Cost per unit</span><input name="cost" type="number" min="0" step="any" value="${first.buy}" inputmode="decimal"></label></div>`, async form => {
-    const q = Math.floor(Number(form.elements.q.value)), cost = Number(form.elements.cost.value);
-    if (!(q > 0)) return 'Quantity must be 1 or more.';
-    if (!isFinite(cost) || cost < 0) return 'Cost must be 0 or more.';
-    const {error} = await sb.rpc('record_purchase', {p_supplier:form.elements.sup.value, p_items:[{product_id:form.elements.pid.value, qty:q, cost}]});
-    if (error) return dberr(error);
-    await refresh(); toast('Purchase recorded. Stock increased.');
-  }, 'Save purchase');
-  $('#mf').elements.pid.addEventListener('change', e => { $('#mf').elements.cost.value = S.products.find(x => x.id === e.target.value).buy; });
+function adjust(id){
+ if(!M())return;const p=S.products.find(x=>x.id===id);
+ modal('Adjust stock',`<p class="sub" style="margin:0 0 12px"><b>${esc(p.name)}</b> has ${p.qty} in stock.</p><label class="fld"><span>Change (use a minus to reduce)</span><input name="ch" type="number" step="1" value="-1" inputmode="numeric"></label><label class="fld"><span>Reason</span><select name="why"><option>Stock count</option><option>Damaged</option><option>Expired</option><option>Returned</option><option>Other</option></select></label>`,async form=>{
+ const ch=Math.trunc(Number(form.elements.ch.value));if(!ch)return'Enter a change other than 0.';if(p.qty+ch<0)return`You can't remove more than the ${p.qty} in stock.`;
+ const {error}=await sb.rpc('adjust_stock',{p_product:p.id,p_change:ch,p_reason:form.elements.why.value});if(error)return dberr(error);await refresh();toast('Stock adjusted');
+ },'Save adjustment');
 }
-function adjust(id) {
-  if (!M()) return;
-  const p = S.products.find(x => x.id === id);
-  modal('Adjust stock', `<p class="sub" style="margin:0 0 12px"><b>${esc(p.name)}</b> has ${p.qty} in stock.</p>
-    <label class="fld"><span>Change (use a minus to reduce)</span><input name="ch" type="number" step="1" value="-1" inputmode="numeric"></label>
-    <label class="fld"><span>Reason</span><select name="why"><option>Stock count</option><option>Damaged</option><option>Expired</option><option>Returned</option><option>Other</option></select></label>`, async form => {
-    const ch = Math.trunc(Number(form.elements.ch.value));
-    if (!ch) return 'Enter a change other than 0.';
-    if (p.qty + ch < 0) return `You can't remove more than the ${p.qty} in stock.`;
-    const {error} = await sb.rpc('adjust_stock', {p_product:p.id, p_change:ch, p_reason:form.elements.why.value});
-    if (error) return dberr(error);
-    await refresh(); toast('Stock adjusted');
-  }, 'Save adjustment');
+/* Expenses */
+const EXP_CATEGORIES=['Rent','Utilities','Salaries','Transport','Marketing','Repairs','Internet','Packaging','Licenses','Other'];
+const localDateKey=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const expenseDateLabel=date=>{if(!date)return'';const[y,m,d]=date.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});};
+function openExpenseForm(id){
+ if(!M())return;const old=id?S.expenses.find(e=>e.id===id):null;if(id&&!old)return toast('Expense not found.');
+ const categories=EXP_CATEGORIES.map(c=>`<option value="${c}" ${old?.category===c?'selected':''}>${c}</option>`).join('');
+ const methods=['Cash','M-Pesa','Bank'].map(m=>`<option value="${m}" ${old?.method===m?'selected':''}>${m}</option>`).join('');
+ modal(old?'Edit expense':'Add expense',`<label class="fld"><span>Expense category</span><select name="category" required>${categories}</select></label><label class="fld"><span>Description</span><input name="description" maxlength="250" value="${esc(old?.description||'')}" placeholder="e.g. Shop electricity bill"></label><div class="two"><label class="fld"><span>Amount (${esc(S.settings.currency)})</span><input name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" value="${old?old.amount:''}" placeholder="0.00" required></label><label class="fld"><span>Payment method</span><select name="method">${methods}</select></label></div><label class="fld"><span>Expense date</span><input name="date" type="date" value="${esc(old?.date||localDateKey())}" required></label>`,async form=>{
+ const category=form.elements.category.value,description=form.elements.description.value.trim(),amount=Number(form.elements.amount.value),method=form.elements.method.value,date=form.elements.date.value;
+ if(!EXP_CATEGORIES.includes(category))return'Select a valid expense category.';if(!Number.isFinite(amount)||amount<=0)return'Enter an amount greater than zero.';if(!['Cash','M-Pesa','Bank'].includes(method))return'Select a valid payment method.';if(!date||!/^\d{4}-\d{2}-\d{2}$/.test(date))return'Select a valid expense date.';
+ const row={category,description:description||null,amount,payment_method:method,expense_date:date};
+ const result=old?await sb.from('expenses').update(row).eq('id',old.id).eq('business_id',S.biz):await sb.from('expenses').insert({business_id:S.biz,...row});
+ if(result.error)return dberr(result.error);await refresh();toast(old?'Expense updated successfully.':'Expense recorded successfully.');
+ },old?'Save changes':'Add expense');
 }
-
-/* ===== data views ===== */
-function activity() {
-  return [
-    ...S.sales.map(s => ({ref:s.id, type:'Sale', c:'ok', party:s.customer, items:sum(s.items, i => i.qty), amt:s.total, date:s.date})),
-    ...S.purchases.map(s => ({ref:s.id, type:'Purchase', c:'blue', party:s.supplier, items:sum(s.items, i => i.qty), amt:s.total, date:s.date})),
-    ...S.adjust.map(a => ({ref:a.id, type:'Adjustment', c:'warn', party:a.name, items:Math.abs(a.change), amt:0, date:a.date}))
-  ].sort((a, b) => new Date(b.date) - new Date(a.date));
+function pgExpenses(){
+ const today=localDateKey(),month=today.slice(0,7),todayExpenses=S.expenses.filter(e=>e.date===today),monthExpenses=S.expenses.filter(e=>e.date.startsWith(month));
+ const todayTotal=sum(todayExpenses,e=>e.amount),monthTotal=sum(monthExpenses,e=>e.amount),allTotal=sum(S.expenses,e=>e.amount);
+ const search=($('#eq')?.value||'').toLowerCase(),filter=$('#ecat')?.value||'all';
+ const list=S.expenses.filter(e=>`${e.category} ${e.description} ${e.method}`.toLowerCase().includes(search)&&(filter==='all'||e.category===filter));
+ return head('Expenses','Track and manage your business spending.',M()?'<button class="btn" data-a="addExpense">+ Add expense</button>':'')+`
+ <div class="stats"><div class="card stat"><span class="bub">${ic('wallet')}</span><div class="l">Today's expenses</div><div class="v">${fmt(todayTotal)}</div><div class="s">${todayExpenses.length} recorded today</div></div><div class="card stat navy"><span class="bub">${ic('chart')}</span><div class="l">This month's expenses</div><div class="v">${fmt(monthTotal)}</div><div class="s">${monthExpenses.length} recorded this month</div></div><div class="card stat"><span class="bub">${ic('trend')}</span><div class="l">Total expenses</div><div class="v">${fmt(allTotal)}</div><div class="s">${S.expenses.length} recorded expenses</div></div><div class="card stat"><span class="bub">${ic('box')}</span><div class="l">Expense categories</div><div class="v">${new Set(S.expenses.map(e=>e.category)).size}</div><div class="s">Categories used</div></div></div>
+ <div class="tool"><input id="eq" type="search" placeholder="Search expenses..." aria-label="Search expenses"><select id="ecat" aria-label="Filter by category"><option value="all">All categories</option>${EXP_CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div>
+ <div class="card tw">${list.length?`<table class="tbl resp"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Payment</th><th class="num">Amount</th>${M()?'<th></th>':''}</tr></thead><tbody>${list.map(e=>`<tr><td data-l="Date">${expenseDateLabel(e.date)}</td><td data-l="Category">${badge(esc(e.category),'blue')}</td><td data-l="Description">${esc(e.description||'—')}</td><td data-l="Payment">${esc(e.method)}</td><td data-l="Amount" class="num"><b>${fmt(e.amount)}</b></td>${M()?`<td class="act"><button class="btn ghost sm" data-a="editExpense" data-id="${e.id}">Edit</button> ${S.role==='owner'?`<button class="btn danger sm" data-a="deleteExpense" data-id="${e.id}">Delete</button>`:''}</td>`:''}</tr>`).join('')}</tbody></table>`:`<div class="empty"><b>${S.expenses.length?'No matching expenses':'No expenses recorded yet'}</b>${S.expenses.length?'Try a different search or category.':'Record your first business expense to start tracking spending.'}</div>`}</div><p class="sub" style="margin-top:10px">Showing up to 400 most recent expenses.</p>`;
 }
-function weekData() {
-  const L = [], sa = [], pu = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i); const k = d.toDateString();
-    L.push(d.toLocaleDateString('en-GB', {weekday:'short'}));
-    sa.push(sum(S.sales.filter(s => dkey(s.date) === k), s => s.total));
-    pu.push(sum(S.purchases.filter(s => dkey(s.date) === k), s => s.total));
-  }
-  return {L, sa, pu};
+async function deleteExpense(id){
+ if(S.role!=='owner')return toast('Only owners can delete expenses.');const e=S.expenses.find(x=>x.id===id);if(!e)return toast('Expense not found.');
+ if(!confirm(`Delete this ${fmt(e.amount)} expense? This cannot be undone.`))return;
+ const{error}=await sb.from('expenses').delete().eq('id',id).eq('business_id',S.biz);if(error)return toast(dberr(error));await refresh();toast('Expense deleted.');
 }
-function catData() {
-  const m = {}; S.products.forEach(p => { const c = p.category || 'Other'; m[c] = (m[c] || 0) + p.qty * p.sell; });
-  return {L:Object.keys(m), V:Object.values(m)};
+function activity(){
+ return [...S.sales.map(s=>({ref:s.id,type:'Sale',c:'ok',party:s.customer,items:sum(s.items,i=>i.qty),amt:s.total,date:s.date})),...S.purchases.map(s=>({ref:s.id,type:'Purchase',c:'blue',party:s.supplier,items:sum(s.items,i=>i.qty),amt:s.total,date:s.date})),...S.adjust.map(a=>({ref:a.id,type:'Adjustment',c:'warn',party:a.name,items:Math.abs(a.change),amt:0,date:a.date}))].sort((a,b)=>new Date(b.date)-new Date(a.date));
 }
-const COLORS = ['#2563EB', '#0B1F3A', '#7dd3fc', '#f59e0b', '#10b981', '#a78bfa'];
-const charts = {};
-function mk(id, cfg) { const el = document.getElementById(id); if (!el || !window.Chart) return; charts[id] = new Chart(el, cfg); }
-function weekChart(id) {
-  const w = weekData();
-  mk(id, {type:'bar', data:{labels:w.L, datasets:[{label:'Sales', data:w.sa, backgroundColor:'#2563EB', borderRadius:6}, {label:'Purchases', data:w.pu, backgroundColor:'#bfdbfe', borderRadius:6}]},
-    options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
-      scales:{y:{beginAtZero:true, ticks:{callback:v => v >= 1000 ? v / 1000 + 'k' : v}, grid:{color:'#eef2f8'}}, x:{grid:{display:false}}}}});
+function weekData(){
+ const L=[],sa=[],pu=[],ex=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.toDateString(),iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;L.push(d.toLocaleDateString('en-GB',{weekday:'short'}));sa.push(sum(S.sales.filter(s=>dkey(s.date)===k),s=>s.total));pu.push(sum(S.purchases.filter(s=>dkey(s.date)===k),s=>s.total));ex.push(sum(S.expenses.filter(e=>e.date===iso),e=>e.amount));}return{L,sa,pu,ex};
 }
-function catChart(id) {
-  const c = catData();
-  mk(id, {type:'doughnut', data:{labels:c.L, datasets:[{data:c.V, backgroundColor:COLORS, borderWidth:2}]},
-    options:{responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{legend:{display:false}, tooltip:{callbacks:{label:x => ` ${x.label}: ${fmt(x.parsed)}`}}}}});
+function catData(){const m={};S.products.forEach(p=>{const c=p.category||'Other';m[c]=(m[c]||0)+p.qty*p.sell;});return{L:Object.keys(m),V:Object.values(m)};}
+const COLORS=['#2563EB','#0B1F3A','#7dd3fc','#f59e0b','#10b981','#a78bfa'];const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el||!window.Chart)return;charts[id]=new Chart(el,cfg);}
+function weekChart(id){const w=weekData();mk(id,{type:'bar',data:{labels:w.L,datasets:[{label:'Sales',data:w.sa,backgroundColor:'#2563EB',borderRadius:6},{label:'Purchases',data:w.pu,backgroundColor:'#bfdbfe',borderRadius:6},{label:'Expenses',data:w.ex,backgroundColor:'#f59e0b',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v>=1000?v/1000+'k':v},grid:{color:'#eef2f8'}},x:{grid:{display:false}}}}});}
+function catChart(id){const c=catData();mk(id,{type:'doughnut',data:{labels:c.L,datasets:[{data:c.V,backgroundColor:COLORS,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>` ${x.label}: ${fmt(x.parsed)}`}}}}});}
+const legend=()=>{const c=catData();return c.L.length?`<div class="legend">${c.L.map((l,i)=>`<span><i style="background:${COLORS[i%COLORS.length]}"></i>${esc(l)}</span>`).join('')}</div>`:'<p class="sub">Add products to see this chart.</p>';};
+function pgDashboard(){
+ const hr=new Date().getHours(),greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening',today=localDateKey();
+ const low=lowList(),todaySales=S.sales.filter(s=>dkey(s.date)===dkey(new Date())),todayTotal=sum(todaySales,s=>s.total);
+ const todayGross=sum(todaySales,s=>sum(s.items,i=>i.qty*(i.price-i.cost))),todayExpense=sum(S.expenses.filter(e=>e.date===today),e=>e.amount),todayNet=todayGross-todayExpense;
+ const act=activity().slice(0,6),first=esc((S.settings.owner||'').split(' ')[0]);
+ return head(`${greet}, ${first}`,'Here is what is happening across your business today.',(M()?'<button class="btn ghost" data-a="go" data-to="reports">View reports</button>':'')+'<button class="btn" data-a="newSale">+ Record sale</button>')+`
+ <div class="stats"><div class="card stat"><span class="bub">${ic('box')}</span><div class="l">Total products</div><div class="v">${S.products.length}</div><div class="s">${sum(S.products,p=>p.qty)} units in stock</div></div><div class="card stat navy"><span class="bub">${ic('wallet')}</span><div class="l">Inventory value</div><div class="v">${fmt(sum(S.products,p=>p.qty*p.sell))}</div><div class="s">At current selling price</div></div><div class="card stat"><span class="bub">${ic('trend')}</span><div class="l">Sales today</div><div class="v">${fmt(todayTotal)}</div><div class="s">${todaySales.length} transactions today</div></div><div class="card stat warn"><span class="bub">${ic('alert')}</span><div class="l">Low stock alerts</div><div class="v">${low.length}</div><div class="s">${low.length?'Items need a restock soon':'Nothing needs restocking'}</div></div></div>
+ <div class="g3"><div class="card stat"><div class="l">Gross profit today</div><div class="v">${fmt(todayGross)}</div><div class="s">Sales less cost of items sold</div></div><div class="card stat"><div class="l">Expenses today</div><div class="v">${fmt(todayExpense)}</div><div class="s">Recorded business expenses</div></div><div class="card stat navy"><div class="l">Net profit today</div><div class="v">${fmt(todayNet)}</div><div class="s">Gross profit less expenses</div></div></div>
+ <div class="g2"><div class="card"><div class="cardh"><h2>Business activity</h2><span class="sub" style="margin:0">Last 7 days</span></div><div class="ch"><canvas id="cWeek"></canvas></div></div><div class="card"><div class="cardh"><h2>Stock by category</h2></div><div class="ch" style="height:200px"><canvas id="cCat"></canvas></div>${legend()}</div></div>
+ <div class="g2"><div class="card"><div class="cardh"><h2>Recent activity</h2></div>${act.length?`<div class="tw"><table class="tbl resp"><thead><tr><th>Reference</th><th>Type</th><th>Party</th><th class="num">Items</th><th class="num">Amount</th><th>Date</th></tr></thead><tbody>${act.map(a=>`<tr><td data-l="Reference"><b>${esc(a.ref)}</b></td><td data-l="Type">${badge(a.type,a.c)}</td><td data-l="Party">${esc(a.party)}</td><td data-l="Items" class="num">${a.items}</td><td data-l="Amount" class="num">${fmt(a.amt)}</td><td data-l="Date">${fdt(a.date)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>No activity yet</b>Add your first product, then record a sale.</div>'}</div><div class="card"><div class="cardh"><h2>Needs attention</h2></div>${low.length?low.map(p=>`<div class="li"><div class="t"><b>${esc(p.name)}</b><small>${p.qty} left, reorder at ${p.reorder}</small></div>${M()?`<button class="btn ghost sm" data-a="newPurchase" data-id="${p.id}">Restock</button>`:''}</div>`).join(''):'<div class="empty"><b>All good</b>No products are below their reorder level.</div>'}</div></div>`;
 }
-const legend = () => { const c = catData(); return c.L.length ? `<div class="legend">${c.L.map((l, i) => `<span><i style="background:${COLORS[i % COLORS.length]}"></i>${esc(l)}</span>`).join('')}</div>` : '<p class="sub">Add products to see this chart.</p>'; };
-
-/* ===== pages ===== */
-function pgDashboard() {
-  const hr = new Date().getHours(), greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
-  const low = lowList(), todayTotal = sum(S.sales.filter(s => dkey(s.date) === dkey(new Date())), s => s.total);
-  const act = activity().slice(0, 6);
-  const first = esc((S.settings.owner || '').split(' ')[0]);
-  return head(`${greet}, ${first}`, 'Here is what is happening across your business today.', (M() ? `<button class="btn ghost" data-a="go" data-to="reports">View reports</button>` : '') + `<button class="btn" data-a="newSale">+ Record sale</button>`) + `
-  <div class="stats">
-    <div class="card stat"><span class="bub">${ic('box')}</span><div class="l">Total products</div><div class="v">${S.products.length}</div><div class="s">${sum(S.products, p => p.qty)} units in stock</div></div>
-    <div class="card stat navy"><span class="bub">${ic('wallet')}</span><div class="l">Inventory value</div><div class="v">${fmt(sum(S.products, p => p.qty * p.sell))}</div><div class="s">At current selling price</div></div>
-    <div class="card stat"><span class="bub">${ic('trend')}</span><div class="l">Sales today</div><div class="v">${fmt(todayTotal)}</div><div class="s">${todayTotal ? 'Recorded today' : 'No sales recorded yet'}</div></div>
-    <div class="card stat warn"><span class="bub">${ic('alert')}</span><div class="l">Low stock alerts</div><div class="v">${low.length}</div><div class="s">${low.length ? 'Items need a restock soon' : 'Nothing needs restocking'}</div></div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="cardh"><h2>Sales performance</h2><span class="sub" style="margin:0">Last 7 days</span></div><div class="ch"><canvas id="cWeek"></canvas></div></div>
-    <div class="card"><div class="cardh"><h2>Stock by category</h2></div><div class="ch" style="height:200px"><canvas id="cCat"></canvas></div>${legend()}</div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="cardh"><h2>Recent activity</h2></div>${act.length ? `<div class="tw"><table class="tbl resp"><thead><tr><th>Reference</th><th>Type</th><th>Party</th><th class="num">Items</th><th class="num">Amount</th><th>Date</th></tr></thead><tbody>${act.map(a => `<tr><td data-l="Reference"><b>${esc(a.ref)}</b></td><td data-l="Type">${badge(a.type, a.c)}</td><td data-l="Party">${esc(a.party)}</td><td data-l="Items" class="num">${a.items}</td><td data-l="Amount" class="num">${fmt(a.amt)}</td><td data-l="Date">${fdt(a.date)}</td></tr>`).join('')}</tbody></table></div>` : '<div class="empty"><b>No activity yet</b>Add your first product, then record a sale.</div>'}</div>
-    <div class="card"><div class="cardh"><h2>Needs attention</h2></div>${low.length ? low.map(p => `<div class="li"><div class="t"><b>${esc(p.name)}</b><small>${p.qty} left, reorder at ${p.reorder}</small></div>${M() ? `<button class="btn ghost sm" data-a="newPurchase" data-id="${p.id}">Restock</button>` : ''}</div>`).join('') : '<div class="empty"><b>All good</b>No products are below their reorder level.</div>'}</div>
-  </div>`;
+function rowsProducts(){
+ const q=($('#q')?.value||'').toLowerCase(),f=$('#sf')?.value||'all';
+ const list=S.products.filter(p=>(p.name+' '+p.sku+' '+p.category).toLowerCase().includes(q)&&(f==='all'||(f==='low'&&p.qty>0&&p.qty<=p.reorder)||(f==='out'&&p.qty<=0)));
+ if(!list.length)return`<tr><td colspan="6" class="empty"><b>${S.products.length?'No products match your search':'No products yet'}</b>${S.products.length?'Try a different name or filter.':(M()?'Add your first product to start tracking stock.':'Ask your manager to add products.')}</td></tr>`;
+ return list.map(p=>{const[t,c]=status(p);return`<tr><td data-l="Product"><b>${esc(p.name)}</b><br><small style="color:var(--mut)">${esc(p.sku)}</small></td><td data-l="Category">${esc(p.category)}</td><td data-l="Price" class="num">${fmt(p.sell)}</td><td data-l="In stock" class="num">${p.qty}</td><td data-l="Status">${badge(t,c)}</td>${M()?`<td class="act"><button class="btn ghost sm" data-a="edit" data-e="products" data-id="${p.id}">Edit</button> <button class="btn danger sm" data-a="del" data-e="products" data-id="${p.id}">Delete</button></td>`:'<td class="hide-m"></td>'}</tr>`;}).join('');
 }
-function rowsProducts() {
-  const q = ($('#q')?.value || '').toLowerCase(), f = $('#sf')?.value || 'all';
-  const list = S.products.filter(p => (p.name + ' ' + p.sku + ' ' + p.category).toLowerCase().includes(q) && (f === 'all' || (f === 'low' && p.qty > 0 && p.qty <= p.reorder) || (f === 'out' && p.qty <= 0)));
-  if (!list.length) return `<tr><td colspan="6" class="empty"><b>${S.products.length ? 'No products match your search' : 'No products yet'}</b>${S.products.length ? 'Try a different name or filter.' : (M() ? 'Add your first product to start tracking stock.' : 'Ask your manager to add products.')}</td></tr>`;
-  return list.map(p => { const [t, c] = status(p); return `<tr><td data-l="Product"><b>${esc(p.name)}</b><br><small style="color:var(--mut)">${esc(p.sku)}</small></td><td data-l="Category">${esc(p.category)}</td><td data-l="Price" class="num">${fmt(p.sell)}</td><td data-l="In stock" class="num">${p.qty}</td><td data-l="Status">${badge(t, c)}</td>${M() ? `<td class="act"><button class="btn ghost sm" data-a="edit" data-e="products" data-id="${p.id}">Edit</button> <button class="btn danger sm" data-a="del" data-e="products" data-id="${p.id}">Delete</button></td>` : '<td class="hide-m"></td>'}</tr>`; }).join('');
+function pgProducts(){return head('Products','Everything you sell, in one list.',M()?'<button class="btn" data-a="add" data-e="products">+ Add product</button>':'')+`<div class="tool"><input id="q" type="search" placeholder="Search by name, code or category" aria-label="Search products"><select id="sf" aria-label="Filter"><option value="all">All stock</option><option value="low">Low stock</option><option value="out">Out of stock</option></select></div><div class="card tw"><table class="tbl resp"><thead><tr><th>Product</th><th>Category</th><th class="num">Price</th><th class="num">In stock</th><th>Status</th><th></th></tr></thead><tbody id="prow">${rowsProducts()}</tbody></table></div>`;}
+function pgInventory(){
+ const out=S.products.filter(p=>p.qty<=0).length,low=lowList().filter(p=>p.qty>0).length;
+ return head('Inventory','Track stock levels and fix counts.',M()?'<button class="btn" data-a="newPurchase">+ Record purchase</button>':'')+`<div class="g3"><div class="card stat"><div class="l">Healthy items</div><div class="v">${S.products.length-out-low}</div></div><div class="card stat warn"><div class="l">Low stock</div><div class="v">${low}</div></div><div class="card stat"><div class="l">Out of stock</div><div class="v">${out}</div></div></div><div class="card tw" style="margin-bottom:14px">${S.products.length?`<table class="tbl resp"><thead><tr><th>Product</th><th class="num">In stock</th><th class="num">Reorder at</th><th>Status</th><th></th></tr></thead><tbody>${S.products.map(p=>{const[t,c]=status(p);return`<tr><td data-l="Product"><b>${esc(p.name)}</b></td><td data-l="In stock" class="num">${p.qty}</td><td data-l="Reorder at" class="num">${p.reorder}</td><td data-l="Status">${badge(t,c)}</td><td class="act">${M()?`<button class="btn ghost sm" data-a="adjust" data-id="${p.id}">Adjust stock</button>`:''}</td></tr>`;}).join('')}</tbody></table>`:'<div class="empty"><b>No products yet</b>Add products first, then track their stock here.</div>'}</div><div class="card"><div class="cardh"><h2>Stock adjustments</h2></div>${S.adjust.length?S.adjust.map(a=>`<div class="li"><div class="t"><b>${esc(a.name)}</b><small>${esc(a.reason)} on ${fdt(a.date)}</small></div>${badge((a.change>0?'+':'')+a.change,a.change>0?'ok':'bad')}</div>`).join(''):'<div class="empty"><b>No adjustments yet</b>Use Adjust stock after a stock count or damage.</div>'}</div>`;
 }
-function pgProducts() {
-  return head('Products', 'Everything you sell, in one list.', M() ? `<button class="btn" data-a="add" data-e="products">+ Add product</button>` : '') + `
-  <div class="tool"><input id="q" type="search" placeholder="Search by name, code or category" aria-label="Search products"><select id="sf" aria-label="Filter"><option value="all">All stock</option><option value="low">Low stock</option><option value="out">Out of stock</option></select></div>
-  <div class="card tw"><table class="tbl resp"><thead><tr><th>Product</th><th>Category</th><th class="num">Price</th><th class="num">In stock</th><th>Status</th><th></th></tr></thead><tbody id="prow">${rowsProducts()}</tbody></table></div>`;
+function pgSales(){
+ const today=sum(S.sales.filter(s=>dkey(s.date)===dkey(new Date())),s=>s.total);
+ return head('Sales','Record sales and review your history.','<button class="btn" data-a="newSale">+ Record sale</button>')+`<div class="g3"><div class="card stat"><div class="l">Sales today</div><div class="v">${fmt(today)}</div></div><div class="card stat"><div class="l">All sales</div><div class="v">${fmt(sum(S.sales,s=>s.total))}</div></div><div class="card stat"><div class="l">Number of sales</div><div class="v">${S.sales.length}</div></div></div><div class="card tw">${S.sales.length?`<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Customer</th><th>Items</th><th>Payment</th><th class="num">Total</th><th></th></tr></thead><tbody>${S.sales.map(s=>`<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Customer">${esc(s.customer)}</td><td data-l="Items">${s.items.map(i=>esc(i.name)+' x'+i.qty).join(', ')}</td><td data-l="Payment">${esc(s.method)}</td><td data-l="Total" class="num">${fmt(s.total)}</td><td class="act"><button class="btn ghost sm" data-a="receipt" data-ref="${esc(s.id)}">Receipt</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty"><b>No sales yet</b>Tap Record sale when you sell something.</div>'}</div>`;
 }
-function pgInventory() {
-  const out = S.products.filter(p => p.qty <= 0).length, low = lowList().filter(p => p.qty > 0).length;
-  return head('Inventory', 'Track stock levels and fix counts.', `<button class="btn" data-a="newPurchase">+ Record purchase</button>`) + `
-  <div class="g3"><div class="card stat"><div class="l">Healthy items</div><div class="v">${S.products.length - out - low}</div></div><div class="card stat warn"><div class="l">Low stock</div><div class="v">${low}</div></div><div class="card stat"><div class="l">Out of stock</div><div class="v">${out}</div></div></div>
-  <div class="card tw" style="margin-bottom:14px">${S.products.length ? `<table class="tbl resp"><thead><tr><th>Product</th><th class="num">In stock</th><th class="num">Reorder at</th><th>Status</th><th></th></tr></thead><tbody>${S.products.map(p => { const [t, c] = status(p); return `<tr><td data-l="Product"><b>${esc(p.name)}</b></td><td data-l="In stock" class="num">${p.qty}</td><td data-l="Reorder at" class="num">${p.reorder}</td><td data-l="Status">${badge(t, c)}</td><td class="act"><button class="btn ghost sm" data-a="adjust" data-id="${p.id}">Adjust stock</button></td></tr>`; }).join('')}</tbody></table>` : '<div class="empty"><b>No products yet</b>Add products first, then track their stock here.</div>'}</div>
-  <div class="card"><div class="cardh"><h2>Stock adjustments</h2></div>${S.adjust.length ? S.adjust.map(a => `<div class="li"><div class="t"><b>${esc(a.name)}</b><small>${esc(a.reason)} on ${fdt(a.date)}</small></div>${badge((a.change > 0 ? '+' : '') + a.change, a.change > 0 ? 'ok' : 'bad')}</div>`).join('') : '<div class="empty"><b>No adjustments yet</b>Use Adjust stock after a stock count or damage.</div>'}</div>`;
+function pgPurchases(){return head('Purchases','Record new stock from your suppliers.',M()?'<button class="btn" data-a="newPurchase">+ Record purchase</button>':'')+`<div class="card tw">${S.purchases.length?`<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Supplier</th><th>Items</th><th class="num">Total</th></tr></thead><tbody>${S.purchases.map(s=>`<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Supplier">${esc(s.supplier)}</td><td data-l="Items">${s.items.map(i=>esc(i.name)+' x'+i.qty).join(', ')}</td><td data-l="Total" class="num">${fmt(s.total)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty"><b>No purchases yet</b>Record stock you buy so quantities stay correct.</div>'}</div>`;}
+function pgParty(ent,title,sub){
+ const L=S[ent],can=ent==='customers'||M();
+ return head(title,sub,can?`<button class="btn" data-a="add" data-e="${ent}">+ Add ${ENT[ent].one}</button>`:'')+(L.length?`<div class="party">${L.map(r=>`<div class="card"><h3>${esc(r.name)}</h3>${r.phone?`<p>${esc(r.phone)}</p>`:''}${r.email?`<p>${esc(r.email)}</p>`:''}${r.address?`<p>${esc(r.address)}</p>`:''}${can?`<div class="row"><button class="btn ghost sm" data-a="edit" data-e="${ent}" data-id="${r.id}">Edit</button>${M()?`<button class="btn danger sm" data-a="del" data-e="${ent}" data-id="${r.id}">Delete</button>`:''}</div>`:''}</div>`).join('')}</div>`:`<div class="card empty"><b>No ${ent} yet</b>Add your first ${ENT[ent].one}.</div>`);
 }
-function pgSales() {
-  const today = sum(S.sales.filter(s => dkey(s.date) === dkey(new Date())), s => s.total);
-  return head('Sales', 'Record sales and review your history.', `<button class="btn" data-a="newSale">+ Record sale</button>`) + `
-  <div class="g3"><div class="card stat"><div class="l">Sales today</div><div class="v">${fmt(today)}</div></div><div class="card stat"><div class="l">All sales</div><div class="v">${fmt(sum(S.sales, s => s.total))}</div></div><div class="card stat"><div class="l">Number of sales</div><div class="v">${S.sales.length}</div></div></div>
-  <div class="card tw">${S.sales.length ? `<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Customer</th><th>Items</th><th>Payment</th><th class="num">Total</th><th></th></tr></thead><tbody>${S.sales.map(s => `<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Customer">${esc(s.customer)}</td><td data-l="Items">${s.items.map(i => esc(i.name) + ' x' + i.qty).join(', ')}</td><td data-l="Payment">${esc(s.method)}</td><td data-l="Total" class="num">${fmt(s.total)}</td><td class="act"><button class="btn ghost sm" data-a="receipt" data-ref="${esc(s.id)}">Receipt</button></td></tr>`).join('')}</tbody></table>` : '<div class="empty"><b>No sales yet</b>Tap Record sale when you sell something.</div>'}</div>`;
+function pgReports(){
+ const tS=sum(S.sales,s=>s.total),tP=sum(S.purchases,s=>s.total),cogs=sum(S.sales,s=>sum(s.items,i=>i.qty*i.cost)),gross=sum(S.sales,s=>sum(s.items,i=>i.qty*(i.price-i.cost))),expenses=sum(S.expenses,e=>e.amount),net=gross-expenses;
+ const top={};S.sales.forEach(s=>s.items.forEach(i=>{top[i.name]=top[i.name]||{q:0,r:0};top[i.name].q+=i.qty;top[i.name].r+=i.qty*i.price;}));
+ const tops=Object.entries(top).sort((a,b)=>b[1].r-a[1].r).slice(0,5);
+ const cat={};S.products.forEach(p=>{const c=p.category||'Other';cat[c]=cat[c]||{u:0,cost:0,retail:0};cat[c].u+=p.qty;cat[c].cost+=p.qty*p.buy;cat[c].retail+=p.qty*p.sell;});
+ const expCat={};S.expenses.forEach(e=>expCat[e.category]=(expCat[e.category]||0)+e.amount);
+ return head('Reports','Understand sales, costs, expenses and profit.')+`
+ <div class="stats"><div class="card stat"><div class="l">Total sales</div><div class="v">${fmt(tS)}</div><div class="s">Recorded sales</div></div><div class="card stat"><div class="l">Cost of goods sold</div><div class="v">${fmt(cogs)}</div><div class="s">Cost of items actually sold</div></div><div class="card stat"><div class="l">Gross profit</div><div class="v">${fmt(gross)}</div><div class="s">Sales less cost of goods sold</div></div><div class="card stat navy"><div class="l">Net profit estimate</div><div class="v">${fmt(net)}</div><div class="s">Gross profit less recorded expenses</div></div></div>
+ <div class="g3"><div class="card stat"><div class="l">Total expenses</div><div class="v">${fmt(expenses)}</div><div class="s">${S.expenses.length} expense records</div></div><div class="card stat"><div class="l">Total purchases</div><div class="v">${fmt(tP)}</div><div class="s">Stock bought; not deducted again from profit</div></div><div class="card stat"><div class="l">Inventory at cost</div><div class="v">${fmt(sum(S.products,p=>p.qty*p.buy))}</div><div class="s">Value of current stock</div></div></div>
+ <div class="g2"><div class="card"><div class="cardh"><h2>Sales, purchases & expenses</h2></div><div class="ch"><canvas id="rWeek"></canvas></div></div><div class="card"><div class="cardh"><h2>Stock value by category</h2></div><div class="ch" style="height:200px"><canvas id="rCat"></canvas></div>${legend()}</div></div>
+ <div class="g2"><div class="card"><div class="cardh"><h2>Top selling products</h2></div>${tops.length?tops.map(([n,v])=>`<div class="li"><div class="t"><b>${esc(n)}</b><small>${v.q} sold</small></div><b>${fmt(v.r)}</b></div>`).join(''):'<div class="empty"><b>No sales yet</b></div>'}</div>
+ <div class="card"><div class="cardh"><h2>Expenses by category</h2></div>${Object.keys(expCat).length?Object.entries(expCat).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div class="li"><div class="t"><b>${esc(n)}</b></div><b>${fmt(v)}</b></div>`).join(''):'<div class="empty"><b>No expenses recorded</b>Record expenses to see your spending breakdown.</div>'}</div></div>
+ <div class="card tw"><div class="cardh"><h2>Inventory valuation</h2></div>${Object.keys(cat).length?`<table class="tbl"><thead><tr><th>Category</th><th class="num">Units</th><th class="num">At cost</th><th class="num">At selling price</th></tr></thead><tbody>${Object.entries(cat).map(([n,v])=>`<tr><td>${esc(n)}</td><td class="num">${v.u}</td><td class="num">${fmt(v.cost)}</td><td class="num">${fmt(v.retail)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty"><b>No products yet</b></div>'}</div>`;
 }
-function pgPurchases() {
-  return head('Purchases', 'Record new stock from your suppliers.', `<button class="btn" data-a="newPurchase">+ Record purchase</button>`) + `
-  <div class="card tw">${S.purchases.length ? `<table class="tbl resp"><thead><tr><th>Reference</th><th>Date</th><th>Supplier</th><th>Items</th><th class="num">Total</th></tr></thead><tbody>${S.purchases.map(s => `<tr><td data-l="Reference"><b>${esc(s.id)}</b></td><td data-l="Date">${fdt(s.date)}</td><td data-l="Supplier">${esc(s.supplier)}</td><td data-l="Items">${s.items.map(i => esc(i.name) + ' x' + i.qty).join(', ')}</td><td data-l="Total" class="num">${fmt(s.total)}</td></tr>`).join('')}</tbody></table>` : '<div class="empty"><b>No purchases yet</b>Record stock you buy so quantities stay correct.</div>'}</div>`;
+function pgSettings(){
+ const s=S.settings;return head('Settings','Your business profile and currency.')+`<form class="card" id="setf" style="max-width:520px" novalidate><label class="fld"><span>Business name</span><input name="biz" value="${esc(s.business)}"></label><label class="fld"><span>Your name</span><input value="${esc(s.owner)}" disabled></label><label class="fld"><span>Currency</span><select name="cur">${['KSh','USh','TSh','USD'].map(c=>`<option ${c===s.currency?'selected':''}>${c}</option>`).join('')}</select></label><p class="err" id="serr"></p><button class="btn" id="sbtn">Save settings</button></form>`;
 }
-function pgParty(ent, title, sub) {
-  const L = S[ent], can = ent === 'customers' || M();
-  return head(title, sub, can ? `<button class="btn" data-a="add" data-e="${ent}">+ Add ${ENT[ent].one}</button>` : '') +
-  (L.length ? `<div class="party">${L.map(r => `<div class="card"><h3>${esc(r.name)}</h3>${r.phone ? `<p>${esc(r.phone)}</p>` : ''}${r.email ? `<p>${esc(r.email)}</p>` : ''}${r.address ? `<p>${esc(r.address)}</p>` : ''}${can ? `<div class="row"><button class="btn ghost sm" data-a="edit" data-e="${ent}" data-id="${r.id}">Edit</button>${M() ? `<button class="btn danger sm" data-a="del" data-e="${ent}" data-id="${r.id}">Delete</button>` : ''}</div>` : ''}</div>`).join('')}</div>` : `<div class="card empty"><b>No ${ent} yet</b>Add your first ${ENT[ent].one}.</div>`);
-}
-function pgReports() {
-  const tS = sum(S.sales, s => s.total), tP = sum(S.purchases, s => s.total);
-  const profit = sum(S.sales, s => sum(s.items, i => i.qty * (i.price - i.cost)));
-  const top = {}; S.sales.forEach(s => s.items.forEach(i => { top[i.name] = top[i.name] || {q:0, r:0}; top[i.name].q += i.qty; top[i.name].r += i.qty * i.price; }));
-  const tops = Object.entries(top).sort((a, b) => b[1].r - a[1].r).slice(0, 5);
-  const cat = {}; S.products.forEach(p => { const c = p.category || 'Other'; cat[c] = cat[c] || {u:0, cost:0, retail:0}; cat[c].u += p.qty; cat[c].cost += p.qty * p.buy; cat[c].retail += p.qty * p.sell; });
-  return head('Reports', 'See how your business is performing.') + `
-  <div class="g3"><div class="card stat"><div class="l">Total sales</div><div class="v">${fmt(tS)}</div></div><div class="card stat"><div class="l">Total purchases</div><div class="v">${fmt(tP)}</div></div><div class="card stat navy"><div class="l">Estimated profit</div><div class="v">${fmt(profit)}</div><div class="s">Selling price minus cost on items sold</div></div></div>
-  <div class="g2"><div class="card"><div class="cardh"><h2>Sales vs purchases</h2></div><div class="ch"><canvas id="rWeek"></canvas></div></div>
-  <div class="card"><div class="cardh"><h2>Stock value by category</h2></div><div class="ch" style="height:200px"><canvas id="rCat"></canvas></div>${legend()}</div></div>
-  <div class="g2"><div class="card"><div class="cardh"><h2>Top selling products</h2></div>${tops.length ? tops.map(([n, v]) => `<div class="li"><div class="t"><b>${esc(n)}</b><small>${v.q} sold</small></div><b>${fmt(v.r)}</b></div>`).join('') : '<div class="empty"><b>No sales yet</b></div>'}</div>
-  <div class="card tw"><div class="cardh"><h2>Inventory valuation</h2></div>${Object.keys(cat).length ? `<table class="tbl"><thead><tr><th>Category</th><th class="num">Units</th><th class="num">At cost</th><th class="num">At selling price</th></tr></thead><tbody>${Object.entries(cat).map(([n, v]) => `<tr><td>${esc(n)}</td><td class="num">${v.u}</td><td class="num">${fmt(v.cost)}</td><td class="num">${fmt(v.retail)}</td></tr>`).join('')}</tbody></table>` : '<div class="empty"><b>No products yet</b></div>'}</div></div>`;
-}
-function pgSettings() {
-  const s = S.settings;
-  return head('Settings', 'Your business profile and currency.') + `<form class="card" id="setf" style="max-width:520px" novalidate>
-    <label class="fld"><span>Business name</span><input name="biz" value="${esc(s.business)}"></label>
-    <label class="fld"><span>Your name</span><input value="${esc(s.owner)}" disabled></label>
-    <label class="fld"><span>Currency</span><select name="cur">${['KSh', 'USh', 'TSh', 'USD'].map(c => `<option ${c === s.currency ? 'selected' : ''}>${c}</option>`).join('')}</select></label>
-    <p class="err" id="serr"></p><button class="btn" id="sbtn">Save settings</button></form>`;
-}
-
-/* ===== router ===== */
-const PAGES = {
-  dashboard:['Dashboard', 'dash', pgDashboard, 0], products:['Products', 'box', pgProducts, 0], inventory:['Inventory', 'layers', pgInventory, 1],
-  sales:['Sales', 'cart', pgSales, 0], purchases:['Purchases', 'bag', pgPurchases, 1],
-  suppliers:['Suppliers', 'truck', () => pgParty('suppliers', 'Suppliers', 'The people and companies you buy stock from.'), 1],
-  customers:['Customers', 'users', () => pgParty('customers', 'Customers', 'The people and businesses you sell to.'), 0],
-  reports:['Reports', 'chart', pgReports, 1], settings:['Settings', 'gear', pgSettings, 1]
+const PAGES={
+ dashboard:['Dashboard','dash',pgDashboard,0],products:['Products','box',pgProducts,0],inventory:['Inventory','layers',pgInventory,1],
+ sales:['Sales','cart',pgSales,0],purchases:['Purchases','bag',pgPurchases,1],
+ suppliers:['Suppliers','truck',()=>pgParty('suppliers','Suppliers','The people and companies you buy stock from.'),1],
+ customers:['Customers','users',()=>pgParty('customers','Customers','The people and businesses you sell to.'),0],
+ expenses:['Expenses','wallet',pgExpenses,1],reports:['Reports','chart',pgReports,1],settings:['Settings','gear',pgSettings,1]
 };
-const GROUPS = [['Workspace', ['dashboard', 'products', 'inventory']], ['Movement', ['sales', 'purchases', 'suppliers', 'customers']], ['Insights', ['reports', 'settings']]];
-const allowed = k => PAGES[k] && (!PAGES[k][3] || M());
-function render() {
-  if (!S.user) return;
-  const h = location.hash.slice(1), key = allowed(h) ? h : 'dashboard';
-  Object.values(charts).forEach(c => c.destroy()); for (const k in charts) delete charts[k];
-  $('#view').innerHTML = PAGES[key][2]();
-  $('#title').textContent = PAGES[key][0];
-  const n = lowList().length;
-  $('#nav').innerHTML = GROUPS.map(([g, ks]) => { const v = ks.filter(allowed); return v.length ? `<div class="grp">${g}</div>` + v.map(k => `<a href="#${k}" class="${k === key ? 'on' : ''}">${ic(PAGES[k][1])}${PAGES[k][0]}${k === 'inventory' && n ? `<span class="cnt">${n}</span>` : ''}</a>`).join('') : ''; }).join('');
-  $('#sbiz').textContent = S.settings.business;
-  $('#sown').textContent = (S.settings.owner || '') + ' (' + S.role + ')';
-  $('#av').textContent = (S.settings.owner || 'S')[0].toUpperCase();
-  $('#side').classList.remove('open'); $('#scrim').classList.remove('on');
-  if (key === 'dashboard') { weekChart('cWeek'); catChart('cCat'); }
-  if (key === 'reports') { weekChart('rWeek'); catChart('rCat'); }
+const GROUPS=[['Workspace',['dashboard','products','inventory']],['Movement',['sales','purchases','suppliers','customers']],['Finance',['expenses']],['Insights',['reports','settings']]];
+const allowed=k=>PAGES[k]&&(!PAGES[k][3]||M());
+function render(){
+ if(!S.user)return;const h=location.hash.slice(1),key=allowed(h)?h:'dashboard';
+ Object.values(charts).forEach(c=>c.destroy());for(const k in charts)delete charts[k];
+ $('#view').innerHTML=PAGES[key][2]();$('#title').textContent=PAGES[key][0];
+ const n=lowList().length;$('#nav').innerHTML=GROUPS.map(([g,ks])=>{const v=ks.filter(allowed);return v.length?`<div class="grp">${g}</div>`+v.map(k=>`<a href="#${k}" class="${k===key?'on':''}">${ic(PAGES[k][1])}${PAGES[k][0]}${k==='inventory'&&n?`<span class="cnt">${n}</span>`:''}</a>`).join(''):'';}).join('');
+ $('#sbiz').textContent=S.settings.business;$('#sown').textContent=(S.settings.owner||'')+' ('+S.role+')';$('#av').textContent=(S.settings.owner||'S')[0].toUpperCase();
+ $('#side').classList.remove('open');$('#scrim').classList.remove('on');
+ if(key==='dashboard'){weekChart('cWeek');catChart('cCat');}if(key==='reports'){weekChart('rWeek');catChart('rCat');}
 }
-
-/* ===== login / signup ===== */
-let mode = 'login', authMsg = '';
-function authView(note = '') {
-  const su = mode === 'signup';
-  $('#authf').innerHTML = `<div class="mbrand"><span class="logo" style="background:var(--blue)">${ic('box').replace('currentColor', '#fff')}</span>StockFlow</div>
-    <h1>${su ? 'Create your account' : 'Welcome back'}</h1><p class="sub" style="margin-bottom:18px">${su ? 'Set up your business in under a minute.' : 'Log in to manage your stock.'}</p>
-    ${note ? `<div class="ok">${esc(note)}</div>` : ''}
-    ${su ? `<label class="fld"><span>Your name</span><input name="fn" autocomplete="name"></label><label class="fld"><span>Business name</span><input name="bn" autocomplete="organization"></label>` : ''}
-    <label class="fld"><span>Email</span><input name="em" type="email" autocomplete="email" inputmode="email"></label>
-    <label class="fld"><span>Password</span><input name="pw" type="password" autocomplete="${su ? 'new-password' : 'current-password'}"></label>
-    <p class="err" id="aerr"></p>
-    <button class="btn" id="abtn">${su ? 'Create account' : 'Log in'}</button>
-    <div class="tog">${su ? 'Already have an account?' : 'New to StockFlow?'} <button type="button" data-a="toggleAuth">${su ? 'Log in' : 'Create an account'}</button></div>`;
-  if (!sb) $('#aerr').textContent = 'Could not load. Check your internet connection and reload the page.';
+let mode='login';
+function authView(note=''){
+ const su=mode==='signup';$('#authf').innerHTML=`<div class="mbrand"><span class="logo" style="background:var(--blue)">${ic('box').replace('currentColor','#fff')}</span>StockFlow</div><h1>${su?'Create your account':'Welcome back'}</h1><p class="sub" style="margin-bottom:18px">${su?'Set up your business in under a minute.':'Log in to manage your stock.'}</p>${note?`<div class="ok">${esc(note)}</div>`:''}${su?'<label class="fld"><span>Your name</span><input name="fn" autocomplete="name"></label><label class="fld"><span>Business name</span><input name="bn" autocomplete="organization"></label>':''}<label class="fld"><span>Email</span><input name="em" type="email" autocomplete="email" inputmode="email"></label><label class="fld"><span>Password</span><input name="pw" type="password" autocomplete="${su?'new-password':'current-password'}"></label><p class="err" id="aerr"></p><button class="btn" id="abtn">${su?'Create account':'Log in'}</button><div class="tog">${su?'Already have an account?':'New to StockFlow?'} <button type="button" data-a="toggleAuth">${su?'Log in':'Create an account'}</button></div>`;
+ if(!sb)$('#aerr').textContent='Could not load. Check your internet connection and reload the page.';
 }
-function showAuth(note) { S = blank(); clearTimeout(idleT); $('#app').classList.add('hidden'); $('#auth').classList.remove('hidden'); closeModal(); mode = 'login'; authView(note); }
-async function enterApp() {
-  $('#auth').classList.add('hidden'); $('#app').classList.remove('hidden');
-  $('#view').innerHTML = '<div class="empty"><b>Loading your business...</b></div>';
-  try { await loadAll(); } catch (e) { await logout(dberr(e)); return; }
-  if (!location.hash) location.hash = 'dashboard';
-  render(); resetIdle();
+function showAuth(note){S=blank();clearTimeout(idleT);$('#app').classList.add('hidden');$('#auth').classList.remove('hidden');closeModal();mode='login';authView(note);}
+async function enterApp(){
+ $('#auth').classList.add('hidden');$('#app').classList.remove('hidden');$('#view').innerHTML='<div class="empty"><b>Loading your business...</b></div>';
+ try{await loadAll();}catch(e){await logout(dberr(e));return;}if(!location.hash)location.hash='dashboard';render();resetIdle();
 }
-async function logout(note) { try { await sb.auth.signOut(); } catch (e) {} showAuth(typeof note === 'string' ? note : ''); }
-let idleT;
-function resetIdle() { clearTimeout(idleT); if (S.user) idleT = setTimeout(() => logout('You were signed out after 30 minutes of inactivity.'), 30 * 60 * 1000); }
-['click', 'keydown', 'touchstart', 'scroll'].forEach(ev => document.addEventListener(ev, resetIdle, {passive:true}));
-
-/* ===== receipts ===== */
-function receiptText(s) {
-  return [S.settings.business, 'Receipt ' + s.id, new Date(s.date).toLocaleString('en-GB'), '']
-    .concat(s.items.map(i => `${i.name} ${i.qty} x ${fmt(i.price)} = ${fmt(i.qty * i.price)}`))
-    .concat(['', 'Total: ' + fmt(s.total), 'Paid by: ' + s.method, 'Thank you for your business.']).join('\n');
+async function logout(note){try{await sb.auth.signOut();}catch(e){}showAuth(typeof note==='string'?note:'');}
+let idleT;function resetIdle(){clearTimeout(idleT);if(S.user)idleT=setTimeout(()=>logout('You were signed out after 30 minutes of inactivity.'),30*60*1000);}
+['click','keydown','touchstart','scroll'].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true}));
+function receiptText(s){return[S.settings.business,'Receipt '+s.id,new Date(s.date).toLocaleString('en-GB'),''].concat(s.items.map(i=>`${i.name} ${i.qty} x ${fmt(i.price)} = ${fmt(i.qty*i.price)}`)).concat(['','Total: '+fmt(s.total),'Paid by: '+s.method,'Thank you for your business.']).join('\n');}
+function showReceipt(ref){
+ const s=S.sales.find(x=>x.id===ref);if(!s)return;const rows=s.items.map(i=>`<tr><td>${esc(i.name)}<br><small>${i.qty} x ${fmt(i.price)}</small></td><td class="num">${fmt(i.qty*i.price)}</td></tr>`).join('');
+ $('#modal').innerHTML=`<div class="ov" data-a="closeOv"><div class="sheet"><div class="sh-h"><h3>Receipt</h3><button type="button" class="ic" data-a="close" aria-label="Close">${ic('x')}</button></div><div class="sh-b"><div class="rcpt"><div class="rh"><b>${esc(S.settings.business)}</b></div><div class="rm">Receipt ${esc(s.id)}<br>${esc(new Date(s.date).toLocaleString('en-GB'))}<br>Customer: ${esc(s.customer)}<br>Paid by: ${esc(s.method)}</div><table>${rows}</table><div class="rt"><span>Total</span><b>${fmt(s.total)}</b></div><p class="rf">Thank you for your business.</p></div></div><div class="sh-f"><button type="button" class="btn ghost" data-a="shareReceipt" data-ref="${esc(s.id)}">Share</button><button type="button" class="btn" data-a="printReceipt">Print</button></div></div></div>`;
 }
-function showReceipt(ref) {
-  const s = S.sales.find(x => x.id === ref); if (!s) return;
-  const rows = s.items.map(i => `<tr><td>${esc(i.name)}<br><small>${i.qty} x ${fmt(i.price)}</small></td><td class="num">${fmt(i.qty * i.price)}</td></tr>`).join('');
-  $('#modal').innerHTML = `<div class="ov" data-a="closeOv"><div class="sheet">
-    <div class="sh-h"><h3>Receipt</h3><button type="button" class="ic" data-a="close" aria-label="Close">${ic('x')}</button></div>
-    <div class="sh-b"><div class="rcpt">
-      <div class="rh"><b>${esc(S.settings.business)}</b></div>
-      <div class="rm">Receipt ${esc(s.id)}<br>${esc(new Date(s.date).toLocaleString('en-GB'))}<br>Customer: ${esc(s.customer)}<br>Paid by: ${esc(s.method)}</div>
-      <table>${rows}</table>
-      <div class="rt"><span>Total</span><b>${fmt(s.total)}</b></div>
-      <p class="rf">Thank you for your business.</p>
-    </div></div>
-    <div class="sh-f"><button type="button" class="btn ghost" data-a="shareReceipt" data-ref="${esc(s.id)}">Share</button><button type="button" class="btn" data-a="printReceipt">Print</button></div>
-  </div></div>`;
-}
-
-/* ===== events ===== */
-const H = {
-  menu() { $('#side').classList.toggle('open'); $('#scrim').classList.toggle('on'); },
-  close: closeModal, closeOv: closeModal,
-  go(d) { location.hash = d.to; },
-  logout() { logout(); },
-  receipt(d) { showReceipt(d.ref); },
-  printReceipt() { window.print(); },
-  shareReceipt(d) {
-    const s = S.sales.find(x => x.id === d.ref); if (!s) return;
-    const text = receiptText(s);
-    if (navigator.share) navigator.share({text}).catch(() => {});
-    else window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
-  },
-  toggleAuth() { mode = mode === 'login' ? 'signup' : 'login'; authView(); },
-  add(d) { openForm(d.e); }, edit(d) { openForm(d.e, d.id); },
-  async del(d) {
-    const r = S[d.e].find(x => x.id === d.id);
-    if (!r || !confirm(`Delete ${r.name}? This can't be undone.`)) return;
-    const {error} = await sb.from(d.e).delete().eq('id', d.id);
-    if (error) return toast(dberr(error));
-    await refresh(); toast('Deleted ' + r.name);
-  },
-  adjust(d) { adjust(d.id); }, newSale, newPurchase(d) { newPurchase(d.id); },
-  addLine() { if (!stockOpts()) return; $('#lines').insertAdjacentHTML('beforeend', lineHtml()); calcSale(); },
-  rmLine(d, el) { el.closest('.line').remove(); calcSale(); }
+const H={
+ menu(){$('#side').classList.toggle('open');$('#scrim').classList.toggle('on');},close:closeModal,closeOv:closeModal,
+ go(d){location.hash=d.to;},logout(){logout();},receipt(d){showReceipt(d.ref);},printReceipt(){window.print();},
+ shareReceipt(d){const s=S.sales.find(x=>x.id===d.ref);if(!s)return;const text=receiptText(s);if(navigator.share)navigator.share({text}).catch(()=>{});else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener');},
+ toggleAuth(){mode=mode==='login'?'signup':'login';authView();},add(d){openForm(d.e);},edit(d){openForm(d.e,d.id);},
+ async del(d){const r=S[d.e].find(x=>x.id===d.id);if(!r||!confirm(`Delete ${r.name}? This can't be undone.`))return;const{error}=await sb.from(d.e).delete().eq('id',d.id);if(error)return toast(dberr(error));await refresh();toast('Deleted '+r.name);},
+ adjust(d){adjust(d.id);},newSale,newPurchase(d){newPurchase(d.id);},
+ addLine(){if(!stockOpts())return;$('#lines').insertAdjacentHTML('beforeend',lineHtml());calcSale();},
+ rmLine(d,el){el.closest('.line').remove();calcSale();},
+ addExpense(){openExpenseForm();},editExpense(d){openExpenseForm(d.id);},deleteExpense(d){deleteExpense(d.id);}
 };
-document.addEventListener('click', e => {
-  const a = e.target.closest('[data-a]'); if (!a) return;
-  if (a.dataset.a === 'closeOv' && e.target !== a) return;
-  if (H[a.dataset.a]) H[a.dataset.a](a.dataset, a);
+document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(!a)return;if(a.dataset.a==='closeOv'&&e.target!==a)return;if(H[a.dataset.a])H[a.dataset.a](a.dataset,a);});
+document.addEventListener('input',e=>{
+ if(e.target.id==='q'&&$('#prow'))$('#prow').innerHTML=rowsProducts();
+ if(e.target.id==='eq'){const cat=$('#ecat')?.value||'all',search=e.target.value,start=e.target.selectionStart;$('#view').innerHTML=pgExpenses();$('#eq').value=search;$('#ecat').value=cat;$('#eq').focus();$('#eq').setSelectionRange(start,start);}
 });
-document.addEventListener('input', e => { if (e.target.id === 'q') $('#prow').innerHTML = rowsProducts(); });
-document.addEventListener('change', e => { if (e.target.id === 'sf') $('#prow').innerHTML = rowsProducts(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
-
-document.addEventListener('submit', async e => {
-  if (e.target.id === 'authf') {
-    e.preventDefault();
-    if (!sb) return;
-    const f = e.target.elements, em = f.em.value.trim(), pw = f.pw.value, err = $('#aerr'), btn = $('#abtn');
-    err.textContent = '';
-    if (!em || !pw) { err.textContent = 'Enter your email and password.'; return; }
-    if (mode === 'signup') {
-      if (!f.fn.value.trim() || !f.bn.value.trim()) { err.textContent = 'Enter your name and business name.'; return; }
-      if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) { err.textContent = 'Use at least 8 characters with letters and numbers.'; return; }
-    }
-    btn.disabled = true; btn.textContent = 'Please wait...';
-    try {
-      let res;
-      if (mode === 'signup') res = await sb.auth.signUp({email:em, password:pw, options:{data:{full_name:f.fn.value.trim(), business_name:f.bn.value.trim()}}});
-      else res = await sb.auth.signInWithPassword({email:em, password:pw});
-      if (res.error) {
-        err.textContent = /not confirmed/i.test(res.error.message) ? 'Confirm your email first, then log in.' : mode === 'signup' ? res.error.message : 'Wrong email or password.';
-      } else if (!res.data.session) {
-        mode = 'login'; authView('Account created. Check your email to confirm it, then log in.'); return;
-      } else { S.user = res.data.user; await enterApp(); return; }
-    } catch (x) { err.textContent = dberr(x); }
-    btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account' : 'Log in';
-  }
-  if (e.target.id === 'setf') {
-    e.preventDefault();
-    const biz = e.target.elements.biz.value.trim(), cur = e.target.elements.cur.value, err = $('#serr'), btn = $('#sbtn');
-    if (!biz) { err.textContent = 'Business name is required.'; return; }
-    btn.disabled = true;
-    const {error} = await sb.from('businesses').update({name:biz, currency:cur}).eq('id', S.biz);
-    if (error) { err.textContent = dberr(error); btn.disabled = false; return; }
-    await refresh(); toast('Settings saved');
-  }
+document.addEventListener('change',e=>{
+ if(e.target.id==='sf'&&$('#prow'))$('#prow').innerHTML=rowsProducts();
+ if(e.target.id==='ecat'){const cat=e.target.value,search=$('#eq')?.value||'';$('#view').innerHTML=pgExpenses();$('#ecat').value=cat;$('#eq').value=search;}
 });
-
-if (sb) sb.auth.onAuthStateChange(ev => { if (ev === 'SIGNED_OUT' && S.user) showAuth('You have been signed out.'); });
-$('#menuBtn').innerHTML = ic('menu');
-const logoSvg = ic('box', 20).replace('currentColor', '#fff');
-$('#logo1').innerHTML = logoSvg; $('#logo2').innerHTML = logoSvg;
-authView();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});
+document.addEventListener('submit',async e=>{
+ if(e.target.id==='authf'){
+  e.preventDefault();if(!sb)return;const f=e.target.elements,em=f.em.value.trim(),pw=f.pw.value,err=$('#aerr'),btn=$('#abtn');err.textContent='';
+  if(!em||!pw){err.textContent='Enter your email and password.';return;}
+  if(mode==='signup'){if(!f.fn.value.trim()||!f.bn.value.trim()){err.textContent='Enter your name and business name.';return;}if(pw.length<8||!/[A-Za-z]/.test(pw)||!/\d/.test(pw)){err.textContent='Use at least 8 characters with letters and numbers.';return;}}
+  btn.disabled=true;btn.textContent='Please wait...';
+  try{let res;if(mode==='signup')res=await sb.auth.signUp({email:em,password:pw,options:{data:{full_name:f.fn.value.trim(),business_name:f.bn.value.trim()}}});else res=await sb.auth.signInWithPassword({email:em,password:pw});
+   if(res.error)err.textContent=/not confirmed/i.test(res.error.message)?'Confirm your email first, then log in.':mode==='signup'?res.error.message:'Wrong email or password.';
+   else if(!res.data.session){mode='login';authView('Account created. Check your email to confirm it, then log in.');return;}
+   else{S.user=res.data.user;await enterApp();return;}
+  }catch(x){err.textContent=dberr(x);}btn.disabled=false;btn.textContent=mode==='signup'?'Create account':'Log in';
+ }
+ if(e.target.id==='setf'){
+  e.preventDefault();const biz=e.target.elements.biz.value.trim(),cur=e.target.elements.cur.value,err=$('#serr'),btn=$('#sbtn');if(!biz){err.textContent='Business name is required.';return;}btn.disabled=true;
+  const{error}=await sb.from('businesses').update({name:biz,currency:cur}).eq('id',S.biz);if(error){err.textContent=dberr(error);btn.disabled=false;return;}await refresh();toast('Settings saved');
+ }
+});
+if(sb)sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT'&&S.user)showAuth('You have been signed out.');});
+$('#menuBtn').innerHTML=ic('menu');const logoSvg=ic('box',20).replace('currentColor','#fff');$('#logo1').innerHTML=logoSvg;$('#logo2').innerHTML=logoSvg;authView();
 </script>
 </body>
 </html>
